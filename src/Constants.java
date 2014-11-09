@@ -3,17 +3,20 @@ public interface Constants {
 	// Game Name
 	public static final String GAME_TITLE = "Game";
 	
+	// Host
+	public static final String GAME_SERVER = "127.0.0.1";
+		
 	// Port Number
-	public static final int PORT = 3306;
-	
-	// Number of Game Screens
-	public static final int GAME_SCREEN_COUNT = 3;
+	public static final int PORT = 4445;
 	
 	// Game Screen Width
-	public static final int GAME_SCREEN_WIDTH = 900;
+	public static final int GAME_SCREEN_WIDTH = 600;
 	
 	// Game Screen Height
 	public static final int GAME_SCREEN_HEIGHT = 600;
+	
+	// Game State Flags
+	public static final int WAITING_FOR_PLAYERS = 1;
 	
 	//Minimum Number of Players
 	public static final int MINIMUM_PLAYER_COUNT = 1;
@@ -21,8 +24,13 @@ public interface Constants {
 	//Maximum Number of Players
 	public static final int MAXIMUM_PLAYER_COUNT = 1;
 	
-	// Card Layout Text in Table of Names 
-	public static final String MAIN_MENU = "Main Menu";
-	public static final String GAME_PORTAL = "Game Portal";
-	public static final String START_BATTLE = "Battlefield";
+	// File Locations
+	public static final String BACKGROUND_LOCATION = "assets/images/backgrounds";
+	public static final String ICON_LOCATION = "assets/images/icons";
+	public static final String BUTTON_LOCATION = "assets/images/buttons";
+	
+	// Background Images
+	public static final String MAIN_MENU_BACKGROUND = "MainMenuBackground.jpg";
+	public static final String GAME_PORTAL_BACKGROUND = "MainMenuBackground.jpg";
+	public static final String BATTLEFIELD_BACKGROUND = "MainMenuBackground.jpg";
 }

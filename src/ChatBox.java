@@ -3,7 +3,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,19 +30,16 @@ public class ChatBox extends JPanel implements ActionListener, KeyListener {
 		sendButton.addActionListener(this);
 		textfield.addKeyListener(this);
 		
-		init();
-	}
-	
-	public void init() {
 		setLayout(new BorderLayout());
 		setSize(200, 200);
+
 		add(scrollbar, BorderLayout.NORTH);
 		add(sendButton, BorderLayout.EAST);
 		add(textfield, BorderLayout.SOUTH);
 		add(username, BorderLayout.WEST);
 	}
 	
-	public void actionPerformed(ActionEvent e){	
+	public void actionPerformed(ActionEvent e) {
 		messageBox.append(username.getText() + ": " + textfield.getText()+ "\n");
 		textfield.setText("");
 	}
