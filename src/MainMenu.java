@@ -1,8 +1,8 @@
-import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,9 +10,11 @@ import javax.swing.JTextField;
 
 
 public class MainMenu extends JPanel implements Constants, ActionListener {
-	private Game ui;
+	private JPanel mainMenuPanel;
 	
 	private JLabel characterLimitMessage;
+	private JLabel hostLabel;
+	private JLabel usernameLabel;
 	private JLabel knightCountLabel;
 	private JLabel priestCountLabel;
 	private JLabel wizardCountLabel;
@@ -26,11 +28,12 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 	private JTextField hunterCountField;
 	
 	private JButton joinGameButton;
+	private JButton quitButton;
 
-	public MainMenu(Game ui) {
-		this.ui = ui; 
-		
+	public MainMenu() {
 		characterLimitMessage = new JLabel("Maximum of 5 characters.");
+		hostLabel = new JLabel("Host");
+		usernameLabel = new JLabel("Username");
 		knightCountLabel = new JLabel("Number of Knight/s");
 		priestCountLabel = new JLabel("Number of Priest/s");
 		wizardCountLabel = new JLabel("Number of Wizard/s");
@@ -43,35 +46,49 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 		wizardCountField = new JTextField();
 		hunterCountField = new JTextField();
 		
-		joinGameButton = new JButton(GAME_PORTAL);
-		
-		init();
-	}
-	
-	public void init() {
-		setSize(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		joinGameButton = new JButton("Join Game");
 		joinGameButton.addActionListener(this);
 		
-		// Add the components
-		add(characterLimitMessage);
+		quitButton = new JButton("Quit");
+		quitButton.addActionListener(this);
 		
-		add(knightCountLabel);
-		add(knightCountField);
+		mainMenuPanel = new JPanel();
 		
-		add(priestCountLabel);
-		add(priestCountField);
+		mainMenuPanel.setPreferredSize(new Dimension(300, 300));
+		mainMenuPanel.setLayout(new GridLayout(15, 2));
 		
-		add(wizardCountLabel);
-		add(wizardCountField);
+		mainMenuPanel.add(characterLimitMessage);
+		mainMenuPanel.add(knightCountLabel);
+		mainMenuPanel.add(knightCountField);
+		mainMenuPanel.add(priestCountLabel);
+		mainMenuPanel.add(priestCountField);
+		mainMenuPanel.add(wizardCountLabel);
+		mainMenuPanel.add(wizardCountField);
+		mainMenuPanel.add(hunterCountLabel);
+		mainMenuPanel.add(hunterCountField);
+		mainMenuPanel.add(hostLabel);
+		mainMenuPanel.add(hostField);
+		mainMenuPanel.add(usernameLabel);
+		mainMenuPanel.add(usernameField);
+		mainMenuPanel.add(joinGameButton);
+		mainMenuPanel.add(quitButton);
 		
-		add(hunterCountLabel);
-		add(hunterCountField);
+		add(mainMenuPanel);
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		
-		add(joinGameButton);
+		g.drawImage(GameUtility.getImage(BACKGROUND_LOCATION + '/' + MAIN_MENU_BACKGROUND), 0, 0, null);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		ui.changeScreen(e.getActionCommand());
+		switch(e.getActionCommand()) {
+			case "Join Game"	:	GameUtility.changeScreen(new GamePortal());
+									GameUtility.send("CONNECTED PLAYER: " + usernameField.getText());
+									break;
+			case "Quit"			:	GameUtility.gameFrame.dispose();
+									break;
+		}
 	}
 }
