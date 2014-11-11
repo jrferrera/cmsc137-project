@@ -7,6 +7,7 @@ import java.util.Iterator;
 public class GameServer implements Runnable, Constants {
 	private DatagramSocket serverSocket;
 	private DatagramPacket packet;
+	private InetAddress address;
 	private byte[] buffer;
 	private GameState gameState;
 	private Thread gameThread;
@@ -54,7 +55,7 @@ public class GameServer implements Runnable, Constants {
 		while(true){
 			buffer = new byte[256];
 			packet = new DatagramPacket(buffer, buffer.length);			
-			
+
 			try {
      			serverSocket.receive(packet);
      			clientData = new String(buffer);
@@ -66,11 +67,16 @@ public class GameServer implements Runnable, Constants {
 													hashData = GameUtility.parser(clientData);
 													
 													try {
-														InetAddress address = InetAddress.getByName((String) hashData.get("host"));
+														address = InetAddress.getByName(hashData.get("host"));
 														player = new Player(hashData.get("username"), Integer.parseInt(hashData.get("port")), address);
+														
+														gameState.updatePlayer(player.getUsername(), player);
+														playerCount++;
 													}catch(Exception e) { }
 													
-													gameState.updatePlayer(player.getUsername(), player);
+													if(playerCount == MINIMUM_PLAYER_COUNT || playerCount == MAXIMUM_PLAYER_COUNT) {
+														
+													}
 												}
 				}
 		}
