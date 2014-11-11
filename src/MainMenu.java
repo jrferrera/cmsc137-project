@@ -4,7 +4,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
