@@ -6,15 +6,12 @@ import javax.swing.JPanel;
 
 public class Battlefield extends JPanel implements Constants {
 	private JPanel battlefieldPanel;
-	private ChatBox chatBox;
 	private GameMenu gameMenu;
 	
 	public Battlefield() {
-		chatBox = new ChatBox();
 		gameMenu = new GameMenu();
 		
 		battlefieldPanel = new JPanel(new BorderLayout());
-		battlefieldPanel.add(chatBox, BorderLayout.CENTER);
 		battlefieldPanel.add(gameMenu, BorderLayout.SOUTH);
 		
 		add(battlefieldPanel);
