@@ -11,6 +11,8 @@ public class Player {
 		this.setUsername(username);
 		this.setPort(port);
 		this.setAddress(address);
+		
+		chatBox = new ChatBox();
 	}
 
 	public String getUsername() {
