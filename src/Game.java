@@ -29,7 +29,6 @@ public class Game extends JFrame implements Constants, Runnable {
 		
 		GameUtility.gameFrame = this;
 		gameThread = new Thread(this);
-		GameUtility.messageBox = new JOptionPane();
 		GameUtility.changeScreen(new MainMenu());
 		
 		gameThread.start();
@@ -43,7 +42,18 @@ public class Game extends JFrame implements Constants, Runnable {
 			try {
 				clientSocket.receive(packet);
      			serverData = new String(buffer);
-			} catch(Exception e){ }
+			} catch(Exception e){
+				JOptionPane.showMessageDialog(null, "Connection Failed", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			if(!connected && serverData.startsWith("CONNECTED")) {
+				connected = true;
+				GameUtility.changeScreen(new GamePortal());
+			}else if(!connected && serverData.startsWith("CONNECTION FAILED")) {
+				JOptionPane.showMessageDialog(null, "Connection Failed", "Message", JOptionPane.ERROR_MESSAGE);
+			}else if(connected) {
+				
+			}
 		}
 	}
 	
