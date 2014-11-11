@@ -1,5 +1,7 @@
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class GameServer implements Runnable, Constants {
@@ -12,6 +14,7 @@ public class GameServer implements Runnable, Constants {
 	private int playerCount = 0;
 	private String clientData;
 	private Player player;
+	private HashMap<String, String> hashData;
 	
 	public GameServer() {
 		try {
@@ -21,6 +24,8 @@ public class GameServer implements Runnable, Constants {
 		gameState = new GameState();
 		
 		gameThread = new Thread(this);
+		hashData = new HashMap<String, String>();
+
 		gameStateFlag = WAITING_FOR_PLAYERS;
 		gameThread.start();
 		System.out.println("Server Started");
@@ -58,6 +63,14 @@ public class GameServer implements Runnable, Constants {
 			switch(gameStateFlag) {
 				case WAITING_FOR_PLAYERS	:	if(clientData.startsWith("CONNECT")) {
 													System.out.println(clientData);
+													hashData = GameUtility.parser(clientData);
+													
+													try {
+														InetAddress address = InetAddress.getByName((String) hashData.get("host"));
+														player = new Player(hashData.get("username"), Integer.parseInt(hashData.get("port")), address);
+													}catch(Exception e) { }
+													
+													gameState.updatePlayer(player.getUsername(), player);
 												}
 				}
 		}
