@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 
 public class GameUtility implements Constants{
 	public static JFrame gameFrame;
-	public static JOptionPane messageBox;
 	public static Player player;
 	
 	public static InetAddress address;
@@ -63,7 +62,7 @@ public class GameUtility implements Constants{
 		}catch(Exception e) { }
 	}
 	
-	public static HashMap parser(String str){
+	public static HashMap<String, String> parser(String str){
 		StringTokenizer st = new StringTokenizer(str, "|");
 		HashMap<String, String> hm = new HashMap<String, String>();
 		
