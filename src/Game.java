@@ -42,9 +42,7 @@ public class Game extends JFrame implements Constants, Runnable {
 			try {
 				clientSocket.receive(packet);
      			serverData = new String(buffer);
-			} catch(Exception e){
-				JOptionPane.showMessageDialog(null, "Connection Failed", "Error", JOptionPane.ERROR_MESSAGE);
-			}
+			} catch(Exception e){ }
 			
 			if(!connected && serverData.startsWith("CONNECTED")) {
 				connected = true;
