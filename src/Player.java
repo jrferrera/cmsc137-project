@@ -46,4 +46,14 @@ public class Player {
 	public void setChatBox(ChatBox chatBox) {
 		this.chatBox = chatBox;
 	}
+	
+	public String toString() {
+		String playerData;
+		
+		playerData = "username=" + username + "|" + 
+					 "port=" + port + "|" + 
+					 "address=" + address;
+		
+		return playerData;
+	}
 }
