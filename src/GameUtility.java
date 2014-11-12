@@ -8,7 +8,6 @@ import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
@@ -40,12 +39,24 @@ public class GameUtility implements Constants{
 		GameUtility.gameFrame.repaint();
 	}
 	
-	public static void send(String message) {
+	public static void sendToClient(Player player, String message) {
 		buffer = new byte[256];
 		buffer = message.getBytes();
 		
 		try{
-			address = InetAddress.getByName(HOST);
+			packet = new DatagramPacket(buffer, buffer.length, player.getAddress(), PORT);
+			socket = new DatagramSocket();
+			
+        	socket.send(packet);
+        }catch(Exception e) { }
+	}
+	
+	public static void sendToServer(String message){
+		buffer = new byte[256];
+		buffer = message.getBytes();
+		
+		try{
+			address = InetAddress.getByName(SERVER);
 			packet = new DatagramPacket(buffer, buffer.length, address, PORT);
 			socket = new DatagramSocket();
 			
