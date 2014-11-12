@@ -4,7 +4,7 @@ public interface Constants {
 	public static final String GAME_TITLE = "Game";
 	
 	// Host
-	public static final String GAME_SERVER = "127.0.0.1";
+	public static final String HOST = "127.0.0.1";
 		
 	// Port Number
 	public static final int PORT = 4445;

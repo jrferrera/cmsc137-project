@@ -3,6 +3,8 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -84,8 +86,11 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
-			case "Join Game"	:	GameUtility.changeScreen(new GamePortal());
-									GameUtility.send("CONNECTED PLAYER: " + usernameField.getText());
+			case "Join Game"	:	try {
+										GameUtility.player = new Player(usernameField.getText(), PORT, InetAddress.getByName(HOST));
+										GameUtility.send("CONNECT|" + GameUtility.player.toString());
+									} catch (Exception e1) { }
+									
 									break;
 			case "Quit"			:	GameUtility.gameFrame.dispose();
 									break;

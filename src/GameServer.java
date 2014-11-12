@@ -1,10 +1,13 @@
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class GameServer implements Runnable, Constants {
 	private DatagramSocket serverSocket;
 	private DatagramPacket packet;
+	private InetAddress address;
 	private byte[] buffer;
 	private GameState gameState;
 	private Thread gameThread;
@@ -12,6 +15,7 @@ public class GameServer implements Runnable, Constants {
 	private int playerCount = 0;
 	private String clientData;
 	private Player player;
+	private HashMap<String, String> hashData;
 	
 	public GameServer() {
 		try {
@@ -21,6 +25,8 @@ public class GameServer implements Runnable, Constants {
 		gameState = new GameState();
 		
 		gameThread = new Thread(this);
+		hashData = new HashMap<String, String>();
+
 		gameStateFlag = WAITING_FOR_PLAYERS;
 		gameThread.start();
 		System.out.println("Server Started");
@@ -49,7 +55,7 @@ public class GameServer implements Runnable, Constants {
 		while(true){
 			buffer = new byte[256];
 			packet = new DatagramPacket(buffer, buffer.length);			
-			
+
 			try {
      			serverSocket.receive(packet);
      			clientData = new String(buffer);
@@ -58,6 +64,19 @@ public class GameServer implements Runnable, Constants {
 			switch(gameStateFlag) {
 				case WAITING_FOR_PLAYERS	:	if(clientData.startsWith("CONNECT")) {
 													System.out.println(clientData);
+													hashData = GameUtility.parser(clientData);
+													
+													try {
+														address = InetAddress.getByName(hashData.get("host"));
+														player = new Player(hashData.get("username"), Integer.parseInt(hashData.get("port")), address);
+														
+														gameState.updatePlayer(player.getUsername(), player);
+														playerCount++;
+													}catch(Exception e) { }
+													
+													if(playerCount == MINIMUM_PLAYER_COUNT || playerCount == MAXIMUM_PLAYER_COUNT) {
+														
+													}
 												}
 				}
 		}

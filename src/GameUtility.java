@@ -3,14 +3,18 @@ import java.io.File;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
 public class GameUtility implements Constants{
 	public static JFrame gameFrame;
+	public static Player player;
 	
 	public static InetAddress address;
 	public static DatagramPacket packet;
@@ -41,7 +45,7 @@ public class GameUtility implements Constants{
 		buffer = message.getBytes();
 		
 		try{
-			address = InetAddress.getByName(GAME_SERVER);
+			address = InetAddress.getByName(HOST);
 			packet = new DatagramPacket(buffer, buffer.length, address, PORT);
 			socket = new DatagramSocket();
 			
@@ -56,5 +60,22 @@ public class GameUtility implements Constants{
 			packet = new DatagramPacket(buffer, buffer.length);
 			socket.receive(packet);
 		}catch(Exception e) { }
+	}
+	
+	public static HashMap<String, String> parser(String str){
+		StringTokenizer st = new StringTokenizer(str, "|");
+		HashMap<String, String> hm = new HashMap<String, String>();
+		
+		//Remove the flag
+		st.nextToken();
+		
+		while(st.countTokens() != 0){
+			String token = st.nextToken();
+			String attribute = token.substring(0, token.indexOf("="));
+			String value=token.substring(token.indexOf("=")+1);
+			hm.put(attribute, value);
+		}
+	
+		return hm;
 	}
 }
