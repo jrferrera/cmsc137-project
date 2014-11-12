@@ -87,8 +87,7 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 			case "Join Game"	:	try {
-										GameUtility.player = new Player(usernameField.getText(), PORT, InetAddress.getByName(HOST));
-										GameUtility.send("CONNECT|" + GameUtility.player.toString());
+										GameUtility.sendToServer("CONNECT|" + "username=" + usernameField.getText());
 									} catch (Exception e1) { }
 									
 									break;
