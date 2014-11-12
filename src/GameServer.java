@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -20,13 +21,16 @@ public class GameServer implements Runnable, Constants {
 	public GameServer() {
 		try {
 			serverSocket = new DatagramSocket(PORT);
+			serverSocket.setSoTimeout(100);
+		}catch(IOException e) {
+			System.err.println("Could not listen on port: " + PORT);
+            System.exit(-1);
 		}catch(Exception e) { }
 		
 		gameState = new GameState();
 		
 		gameThread = new Thread(this);
-		hashData = new HashMap<String, String>();
-
+		clientData = "";
 		gameStateFlag = WAITING_FOR_PLAYERS;
 		gameThread.start();
 		System.out.println("Server Started");
@@ -38,17 +42,8 @@ public class GameServer implements Runnable, Constants {
 		for(Iterator<?> i = gameState.getPlayers().keySet().iterator(); i.hasNext();) {
 			playerName = (String)i.next();
 			Player player = (Player)gameState.getPlayers().get(playerName);			
-			send(player, message);
+			GameUtility.sendToClient(player, message);
 		}
-	}
-	
-	public void send(Player player, String message){
-		buffer = message.getBytes();
-		packet = new DatagramPacket(buffer, buffer.length, player.getAddress(), player.getPort());
-		
-		try{
-			serverSocket.send(packet);
-		}catch(Exception e){ }
 	}
 
 	public void run() {
@@ -62,23 +57,29 @@ public class GameServer implements Runnable, Constants {
 			} catch(Exception e){ }
 			
 			switch(gameStateFlag) {
-				case WAITING_FOR_PLAYERS	:	if(clientData.startsWith("CONNECT")) {
-													System.out.println(clientData);
-													hashData = GameUtility.parser(clientData);
-													
-													try {
-														address = InetAddress.getByName(hashData.get("host"));
-														player = new Player(hashData.get("username"), Integer.parseInt(hashData.get("port")), address);
-														
-														gameState.updatePlayer(player.getUsername(), player);
-														playerCount++;
-													}catch(Exception e) { }
-													
-													if(playerCount == MINIMUM_PLAYER_COUNT || playerCount == MAXIMUM_PLAYER_COUNT) {
-														
-													}
-												}
-				}
+				case WAITING_FOR_PLAYERS:
+					if(clientData.startsWith("CONNECT")) {
+						System.out.println(clientData);
+						hashData = GameUtility.parser(clientData);
+						
+						try {
+							player = new Player(hashData.get("username"), packet.getPort(), packet.getAddress());
+							gameState.updatePlayer(player.getUsername(), player);
+							playerCount++;
+							
+							GameUtility.sendToClient(player, "CONNECTED|" + player.toString());
+						}catch(Exception e) { }
+						
+						if(playerCount == MINIMUM_PLAYER_COUNT || playerCount == MAXIMUM_PLAYER_COUNT) {
+							
+						}
+					}else if(clientData.startsWith("CHAT_ALL")) {
+						System.out.println("Message received");
+						
+						hashData = GameUtility.parser(clientData);
+						broadcast("CHAT_ALL|" + "chatMessage=" + hashData.get("chatMessage"));
+					}
+			}
 		}
 	}
 
