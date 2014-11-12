@@ -8,11 +8,11 @@ public class Player {
 	private ChatBox chatBox;
 	
 	public Player(String username, int port, InetAddress address) {
-		this.setUsername(username);
-		this.setPort(port);
-		this.setAddress(address);
+		setUsername(username);
+		setPort(port);
+		setAddress(address);
 		
-		chatBox = new ChatBox();
+		chatBox = new ChatBox(username);
 	}
 
 	public String getUsername() {
