@@ -2,6 +2,7 @@ import java.net.InetAddress;
 
 
 public class Player {
+	private GameClient gameClient;
 	private String username;
 	private int port;
 	private InetAddress address;
@@ -12,7 +13,7 @@ public class Player {
 		setPort(port);
 		setAddress(address);
 		
-		chatBox = new ChatBox(username);
+		chatBox = new ChatBox(gameClient, username);
 	}
 
 	public String getUsername() {
@@ -50,9 +51,7 @@ public class Player {
 	public String toString() {
 		String playerData;
 		
-		playerData = "username=" + username + "|" + 
-					 "port=" + port + "|" + 
-					 "address=" + address;
+		playerData = "username=" + username + "|" + "port=" + port + "|" + "address=" + address;
 		
 		return playerData;
 	}

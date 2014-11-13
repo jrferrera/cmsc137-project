@@ -1,14 +1,18 @@
 import java.awt.BorderLayout;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
+
 import javax.swing.JPanel;
 
 
 public class Battlefield extends JPanel implements Constants {
+	public GameClient ui;
+	public Player player;
 	private JPanel battlefieldPanel;
 	private GameMenu gameMenu;
 	
-	public Battlefield() {
+	public Battlefield(GameClient ui, Player player) {
+		this.ui = ui;
+		this.player = player;
 		gameMenu = new GameMenu();
 		
 		battlefieldPanel = new JPanel(new BorderLayout());
@@ -21,9 +25,5 @@ public class Battlefield extends JPanel implements Constants {
 		super.paintComponent(g);
 		
 		g.drawImage(GameUtility.getImage(BACKGROUND_LOCATION + '/' + BATTLEFIELD_BACKGROUND), 0, 0, null);
-	}
-
-	public void actionPerformed(ActionEvent arg0) {
-		GameUtility.changeScreen(new Battlefield());
 	}
 }

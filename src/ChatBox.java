@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,14 +13,16 @@ import javax.swing.JTextField;
 
 
 public class ChatBox extends JPanel implements ActionListener, KeyListener {
+	public GameClient gameClient;
 	private JTextArea messageBox;
 	private JTextField textfield;
 	private JLabel usernameLabel;
 	private JButton sendButton;
 	private JScrollPane scrollbar;
-	
-	//UI, Player Name, Host Name
-	public ChatBox(String username) {
+		
+	public ChatBox(GameClient gameClient, String username) {
+		this.gameClient = gameClient;
+		
 		messageBox = new JTextArea(10,10);
 		textfield = new JTextField();
 		usernameLabel = new JLabel(username);
@@ -50,7 +53,7 @@ public class ChatBox extends JPanel implements ActionListener, KeyListener {
 	}
 	
 	public void sendMessage() {
-		GameUtility.sendToServer("CHAT_ALL|" + "chatMessage=" + textfield.getText());
+		gameClient.sendToServer("CHAT_ALL|" + "chatMessage=" + textfield.getText());
 	}
 	
 	public void appendMessage(String message) {
