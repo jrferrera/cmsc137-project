@@ -3,6 +3,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
@@ -73,14 +74,24 @@ public class GameClient extends JFrame implements Constants, Runnable {
 			if(!connected && serverData.startsWith("CONNECTED")) {
 				connected = true;
 				hashData = GameUtility.parser(serverData);
+				
+				InetAddress address;
+				try {
+					address = InetAddress.getByName(hashData.get("address").substring(1));
+					player = new Player(hashData.get("username"), Integer.parseInt(hashData.get("port")), address);
+					
+					changeScreen(new GamePortal(this, player));
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
 			}else if(!connected && serverData.startsWith("CONNECTION_FAILED")) {
 				JOptionPane.showMessageDialog(null, "Connection Failed", "Message", JOptionPane.ERROR_MESSAGE);
 			}else if(connected && serverData.startsWith("CHAT_ALL")) {
 				hashData = GameUtility.parser(serverData);
 				
-				player.getChatBox().appendMessage(player.getUsername() + ": " + hashData.get("chatMessage"));
+				player.getChatBox().appendMessage(hashData.get("chatMessage"));
 			}else if(connected) {
-				changeScreen(new GamePortal());
+				System.out.println("Connected");
 			}
 		}
 	}

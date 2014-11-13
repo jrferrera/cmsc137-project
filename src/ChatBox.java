@@ -53,7 +53,7 @@ public class ChatBox extends JPanel implements ActionListener, KeyListener {
 	}
 	
 	public void sendMessage() {
-		gameClient.sendToServer("CHAT_ALL|" + "chatMessage=" + textfield.getText());
+		gameClient.sendToServer("CHAT_ALL|" + "chatMessage=" + usernameLabel.getText() + ": " + textfield.getText());
 	}
 	
 	public void appendMessage(String message) {
