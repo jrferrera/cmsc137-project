@@ -3,15 +3,16 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.InetAddress;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 public class MainMenu extends JPanel implements Constants, ActionListener {
+	public GameClient gameClient;
+	public Player player;
+	
 	private JPanel mainMenuPanel;
 	
 	private JLabel characterLimitMessage;
@@ -31,8 +32,11 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 	
 	private JButton joinGameButton;
 	private JButton quitButton;
-
-	public MainMenu() {
+	
+	public MainMenu(GameClient gameClient, Player player) {
+		this.gameClient = gameClient;
+		this.player = player;
+		
 		characterLimitMessage = new JLabel("Maximum of 5 characters.");
 		hostLabel = new JLabel("Host");
 		usernameLabel = new JLabel("Username");
@@ -86,13 +90,9 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
-			case "Join Game"	:	try {
-										GameUtility.player = new Player(usernameField.getText(), PORT, InetAddress.getByName(HOST));
-										GameUtility.send("CONNECT|" + GameUtility.player.toString());
-									} catch (Exception e1) { }
-									
+			case "Join Game"	:	gameClient.sendToServer("CONNECT|" + "username=" + usernameField.getText());
 									break;
-			case "Quit"			:	GameUtility.gameFrame.dispose();
+			case "Quit"			:	System.exit(0);
 									break;
 		}
 	}

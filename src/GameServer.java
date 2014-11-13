@@ -1,35 +1,47 @@
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Iterator;
 
 public class GameServer implements Runnable, Constants {
 	private DatagramSocket serverSocket;
-	private DatagramPacket packet;
-	private InetAddress address;
-	private byte[] buffer;
-	private GameState gameState;
-	private Thread gameThread;
-	private int gameStateFlag;
-	private int playerCount = 0;
 	private String clientData;
+	
+	private Thread gameThread;
+	private GameState gameState;
+	private int gameStateFlag;
+	
 	private Player player;
+	private int playerCount = 0;
 	private HashMap<String, String> hashData;
 	
 	public GameServer() {
 		try {
 			serverSocket = new DatagramSocket(PORT);
-		}catch(Exception e) { }
+		}catch(IOException e) {
+			System.err.println("Could not listen on port: " + PORT);
+            System.exit(-1);
+		}
 		
+		clientData = "";
 		gameState = new GameState();
-		
 		gameThread = new Thread(this);
-		hashData = new HashMap<String, String>();
-
+		
 		gameStateFlag = WAITING_FOR_PLAYERS;
+
 		gameThread.start();
 		System.out.println("Server Started");
+	}
+	
+	public void sendToClient(Player player, String message) {
+		byte[] buffer = new byte[256];
+		buffer = message.getBytes();
+		
+		try{
+			DatagramPacket packet = new DatagramPacket(buffer, buffer.length, player.getAddress(), player.getPort());
+        	serverSocket.send(packet);
+        }catch(Exception e) { }
 	}
 	
 	public void broadcast(String message) {
@@ -38,47 +50,44 @@ public class GameServer implements Runnable, Constants {
 		for(Iterator<?> i = gameState.getPlayers().keySet().iterator(); i.hasNext();) {
 			playerName = (String)i.next();
 			Player player = (Player)gameState.getPlayers().get(playerName);			
-			send(player, message);
+			sendToClient(player, message);
 		}
-	}
-	
-	public void send(Player player, String message){
-		buffer = message.getBytes();
-		packet = new DatagramPacket(buffer, buffer.length, player.getAddress(), player.getPort());
-		
-		try{
-			serverSocket.send(packet);
-		}catch(Exception e){ }
 	}
 
 	public void run() {
 		while(true){
-			buffer = new byte[256];
-			packet = new DatagramPacket(buffer, buffer.length);			
-
+			byte[] buffer = new byte[256];
+			DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+			
 			try {
      			serverSocket.receive(packet);
      			clientData = new String(buffer);
 			} catch(Exception e){ }
 			
 			switch(gameStateFlag) {
-				case WAITING_FOR_PLAYERS	:	if(clientData.startsWith("CONNECT")) {
-													System.out.println(clientData);
-													hashData = GameUtility.parser(clientData);
-													
-													try {
-														address = InetAddress.getByName(hashData.get("host"));
-														player = new Player(hashData.get("username"), Integer.parseInt(hashData.get("port")), address);
-														
-														gameState.updatePlayer(player.getUsername(), player);
-														playerCount++;
-													}catch(Exception e) { }
-													
-													if(playerCount == MINIMUM_PLAYER_COUNT || playerCount == MAXIMUM_PLAYER_COUNT) {
-														
-													}
-												}
-				}
+				case WAITING_FOR_PLAYERS:
+					if(clientData.startsWith("CONNECT")) {
+						System.out.println(clientData);
+						hashData = GameUtility.parser(clientData);
+						
+						try {
+							player = new Player(hashData.get("username"), packet.getPort(), packet.getAddress());
+							gameState.updatePlayer(player.getUsername(), player);
+							playerCount++;
+						}catch(Exception e) { }
+						
+						sendToClient(player, "CONNECTED|" + player.toString());
+						
+						if(playerCount == MINIMUM_PLAYER_COUNT || playerCount == MAXIMUM_PLAYER_COUNT) {
+							
+						}
+					}else if(clientData.startsWith("CHAT_ALL")) {
+						System.out.println("Message received");
+						
+						hashData = GameUtility.parser(clientData);
+						broadcast("CHAT_ALL|" + "chatMessage=" + hashData.get("chatMessage"));
+					}
+			}
 		}
 	}
 

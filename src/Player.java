@@ -2,17 +2,25 @@ import java.net.InetAddress;
 
 
 public class Player {
+	private GameClient gameClient;
 	private String username;
 	private int port;
 	private InetAddress address;
 	private ChatBox chatBox;
 	
-	public Player(String username, int port, InetAddress address) {
-		this.setUsername(username);
-		this.setPort(port);
-		this.setAddress(address);
+	public Player(GameClient gameClient, String username, int port, InetAddress address) {
+		this.gameClient = gameClient;
+		setUsername(username);
+		setPort(port);
+		setAddress(address);
 		
-		chatBox = new ChatBox();
+		chatBox = new ChatBox(gameClient, username);
+	}
+	
+	public Player(String username, int port, InetAddress address) {
+		setUsername(username);
+		setPort(port);
+		setAddress(address);
 	}
 
 	public String getUsername() {
@@ -50,9 +58,7 @@ public class Player {
 	public String toString() {
 		String playerData;
 		
-		playerData = "username=" + username + "|" + 
-					 "port=" + port + "|" + 
-					 "address=" + address;
+		playerData = "port=" + port + "|" + "address=" + address + "|" + "username=" + username;
 		
 		return playerData;
 	}

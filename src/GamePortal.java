@@ -3,23 +3,32 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
 public class GamePortal extends JPanel implements Constants, ActionListener {
+	private GameClient gameClient;
+	private Player player;
 	private JPanel gamePortalPanel;
-	
 	private JButton startBattleButton;
+	private ChatBox chatBox;
 	
-	public GamePortal() {
+	public GamePortal(GameClient gameClient, Player player) {
+		this.gameClient = gameClient;
+		this.player = player;
+		
+		chatBox = new ChatBox(this.gameClient, player.getUsername());
+		player.setChatBox(chatBox);
 		startBattleButton = new JButton("Start Battle");
 		startBattleButton.addActionListener(this);
 		
 		gamePortalPanel = new JPanel();
 		
-		gamePortalPanel.setPreferredSize(new Dimension(300, 300));
+		gamePortalPanel.setSize(new Dimension(300, 300));
 		gamePortalPanel.setLayout(new GridLayout(1, 1));
+		gamePortalPanel.add(player.getChatBox());
 		gamePortalPanel.add(startBattleButton);
 		
 		add(gamePortalPanel);
@@ -32,6 +41,6 @@ public class GamePortal extends JPanel implements Constants, ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		GameUtility.changeScreen(new Battlefield());
+//		GameUtility.changeScreen(new Battlefield());
 	}
 }
