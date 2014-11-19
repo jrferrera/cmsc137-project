@@ -79,7 +79,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				try {
 					address = InetAddress.getByName(hashData.get("address").substring(1));
 					player = new Player(hashData.get("username"), Integer.parseInt(hashData.get("port")), address);
-					
+					setTitle(GAME_TITLE + "::" + player.getUsername());
 					changeScreen(new GamePortal(this, player));
 				} catch (UnknownHostException e) {
 					e.printStackTrace();
