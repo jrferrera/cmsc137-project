@@ -72,6 +72,12 @@ public class GameServer implements Runnable, Constants {
 						
 						try {
 							player = new Player(hashData.get("username"), packet.getPort(), packet.getAddress());
+							
+							for(int index = 0; index < MAXIMUM_CHARACTER_COUNT; index++) {
+								String characterType = hashData.get("character" + index);
+								player.addCharacter(characterType, index);
+							}
+							
 							gameState.updatePlayer(player.getUsername(), player);
 							playerCount++;
 						}catch(Exception e) { }

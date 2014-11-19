@@ -5,9 +5,6 @@ public interface Constants {
 	
 	// Server
 	public static final String SERVER = "localhost";
-	
-	// Host
-	public static final String HOST = "127.0.0.1";
 		
 	// Port Number
 	public static final int PORT = 4445;
@@ -23,10 +20,13 @@ public interface Constants {
 	public static final int START_BATTLE = 2;
 	
 	//Minimum Number of Players
-	public static final int MINIMUM_PLAYER_COUNT = 1;
+	public static final int MINIMUM_PLAYER_COUNT = 2;
 	
 	//Maximum Number of Players
-	public static final int MAXIMUM_PLAYER_COUNT = 1;
+	public static final int MAXIMUM_PLAYER_COUNT = 4;
+	
+	//Maximum Number of Character per Player
+	public static final int MAXIMUM_CHARACTER_COUNT = 5;
 	
 	// File Locations
 	public static final String BACKGROUND_LOCATION = "assets/images/backgrounds";

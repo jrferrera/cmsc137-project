@@ -17,6 +17,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 	private Player player;
 	private String serverData;
 	private HashMap<String, String> hashData;
+	private String host;
 	boolean connected;
 	
 	public GameClient() {
@@ -31,11 +32,12 @@ public class GameClient extends JFrame implements Constants, Runnable {
 			clientSocket = new DatagramSocket();
 		} catch (SocketException e) { }
 		
+		host = "127.0.0.1";
 		connected = false;
 		serverData = "";
 				
 		gameThread = new Thread(this);
-		changeScreen(new MainMenu(this, player));
+		changeScreen(new MainMenu(player));
 		
 		gameThread.start();
 	}
@@ -53,7 +55,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 		buffer = message.getBytes();
 		
 		try{
-			InetAddress address = InetAddress.getByName(HOST);
+			InetAddress address = InetAddress.getByName(host);
 			DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, PORT);
 			
         	clientSocket.send(packet);
@@ -80,7 +82,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 					address = InetAddress.getByName(hashData.get("address").substring(1));
 					player = new Player(hashData.get("username"), Integer.parseInt(hashData.get("port")), address);
 					setTitle(GAME_TITLE + "::" + player.getUsername());
-					changeScreen(new GamePortal(this, player));
+					changeScreen(new GamePortal(player));
 				} catch (UnknownHostException e) {
 					e.printStackTrace();
 				}
@@ -96,8 +98,16 @@ public class GameClient extends JFrame implements Constants, Runnable {
 		}
 	}
 	
+	public String getHost() {
+		return this.host;
+	}
+	
+	public void setHost(String host) {
+		this.host = host;
+	}
+	
 	public static void main(String args[]) {
-		new GameClient();
+		GameElement.gameClient = new GameClient();
 	}
 }
 

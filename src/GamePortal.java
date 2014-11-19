@@ -9,19 +9,17 @@ import javax.swing.JPanel;
 
 
 public class GamePortal extends JPanel implements Constants, ActionListener {
-	private GameClient gameClient;
 	private Player player;
 	private JPanel gamePortalPanel;
 	private JButton startBattleButton;
 	private ChatBox chatBox;
 	
-	public GamePortal(GameClient gameClient, Player player) {
-		this.gameClient = gameClient;
+	public GamePortal(Player player) {
 		this.player = player;
 		
-		chatBox = new ChatBox(this.gameClient, player.getUsername());
+		chatBox = new ChatBox(player.getUsername());
 		player.setChatBox(chatBox);
-		startBattleButton = new JButton("Start Battle");
+		startBattleButton = new JButton("Warp to Battlefield");
 		startBattleButton.addActionListener(this);
 		
 		gamePortalPanel = new JPanel();
@@ -41,6 +39,6 @@ public class GamePortal extends JPanel implements Constants, ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-//		GameUtility.changeScreen(new Battlefield());
+		GameElement.gameClient.changeScreen(new Battlefield(player));
 	}
 }
