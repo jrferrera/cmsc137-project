@@ -1,56 +1,62 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class MainMenu extends JPanel implements Constants, ActionListener {
-	public GameClient gameClient;
 	public Player player;
 	
 	private JPanel mainMenuPanel;
 	
-	private JLabel characterLimitMessage;
 	private JLabel hostLabel;
 	private JLabel usernameLabel;
-	private JLabel knightCountLabel;
-	private JLabel priestCountLabel;
-	private JLabel wizardCountLabel;
-	private JLabel hunterCountLabel;
+	private JLabel characterOneLabel;
+	private JLabel characterTwoLabel;
+	private JLabel characterThreeLabel;
+	private JLabel characterFourLabel;
+	private JLabel characterFiveLabel;
 	
 	private JTextField hostField;
 	private JTextField usernameField;
-	private JTextField knightCountField;
-	private JTextField priestCountField;
-	private JTextField wizardCountField;
-	private JTextField hunterCountField;
+	private JComboBox characterOneList;
+	private JComboBox characterTwoList;
+	private JComboBox characterThreeList;
+	private JComboBox characterFourList;
+	private JComboBox characterFiveList;
 	
 	private JButton joinGameButton;
 	private JButton quitButton;
 	
-	public MainMenu(GameClient gameClient, Player player) {
-		this.gameClient = gameClient;
+	public MainMenu(Player player) {
 		this.player = player;
 		
-		characterLimitMessage = new JLabel("Maximum of 5 characters.");
 		hostLabel = new JLabel("Host");
 		usernameLabel = new JLabel("Username");
-		knightCountLabel = new JLabel("Number of Knight/s");
-		priestCountLabel = new JLabel("Number of Priest/s");
-		wizardCountLabel = new JLabel("Number of Wizard/s");
-		hunterCountLabel = new JLabel("Number of Hunter/s");
+		
+		characterOneLabel = new JLabel("Character 1:");
+		characterTwoLabel = new JLabel("Character 2:");
+		characterThreeLabel = new JLabel("Character 3:");
+		characterFourLabel = new JLabel("Character 4:");
+		characterFiveLabel = new JLabel("Character 5:");
 		
 		hostField = new JTextField();
 		usernameField = new JTextField();
-		knightCountField = new JTextField();
-		priestCountField = new JTextField();
-		wizardCountField = new JTextField();
-		hunterCountField = new JTextField();
+		String[] characterChoices = { "Knight", "Priest", "Wizard", "Hunter" };
+		characterOneList = new JComboBox(characterChoices);
+		characterTwoList = new JComboBox(characterChoices);
+		characterThreeList = new JComboBox(characterChoices);
+		characterFourList = new JComboBox(characterChoices);
+		characterFiveList = new JComboBox(characterChoices);
 		
 		joinGameButton = new JButton("Join Game");
 		joinGameButton.addActionListener(this);
@@ -60,18 +66,25 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 		
 		mainMenuPanel = new JPanel();
 		
-		mainMenuPanel.setPreferredSize(new Dimension(300, 300));
-		mainMenuPanel.setLayout(new GridLayout(15, 2));
+		mainMenuPanel.setMaximumSize(new Dimension(300, 300));
+		mainMenuPanel.setLayout(new GridLayout(17, 1));
+		mainMenuPanel.setBackground(new Color(0f, 0f, 0f, 0f));
 		
-		mainMenuPanel.add(characterLimitMessage);
-		mainMenuPanel.add(knightCountLabel);
-		mainMenuPanel.add(knightCountField);
-		mainMenuPanel.add(priestCountLabel);
-		mainMenuPanel.add(priestCountField);
-		mainMenuPanel.add(wizardCountLabel);
-		mainMenuPanel.add(wizardCountField);
-		mainMenuPanel.add(hunterCountLabel);
-		mainMenuPanel.add(hunterCountField);
+		mainMenuPanel.add(characterOneLabel);
+		mainMenuPanel.add(characterOneList);
+		
+		mainMenuPanel.add(characterTwoLabel);
+		mainMenuPanel.add(characterTwoList);
+		
+		mainMenuPanel.add(characterThreeLabel);
+		mainMenuPanel.add(characterThreeList);
+		
+		mainMenuPanel.add(characterFourLabel);
+		mainMenuPanel.add(characterFourList);
+		
+		mainMenuPanel.add(characterFiveLabel);
+		mainMenuPanel.add(characterFiveList);
+		
 		mainMenuPanel.add(hostLabel);
 		mainMenuPanel.add(hostField);
 		mainMenuPanel.add(usernameLabel);
@@ -79,7 +92,14 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 		mainMenuPanel.add(joinGameButton);
 		mainMenuPanel.add(quitButton);
 		
-		add(mainMenuPanel);
+		
+		setLayout(new BorderLayout(100, 100));
+		setMaximumSize(new Dimension(600, 600));
+		add(new JPanel(), BorderLayout.NORTH);
+		add(new JPanel(), BorderLayout.EAST);
+		add(new JPanel(), BorderLayout.SOUTH);
+		add(new JPanel(), BorderLayout.WEST);
+		add(mainMenuPanel, BorderLayout.CENTER);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -90,7 +110,8 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
-			case "Join Game"	:	gameClient.sendToServer("CONNECT|" + "username=" + usernameField.getText());
+			case "Join Game"	:	GameElement.gameClient.setHost(hostField.getText());
+									GameElement.gameClient.sendToServer("CONNECT|" + "username=" + usernameField.getText() + "|character0=" + characterOneList.getSelectedItem() + "|character1=" + characterTwoList.getSelectedItem() + "|character2=" + characterThreeList.getSelectedItem() + "|character3=" + characterFourList.getSelectedItem() + "|character4=" + characterFiveList.getSelectedItem());
 									break;
 			case "Quit"			:	System.exit(0);
 									break;

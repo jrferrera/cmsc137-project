@@ -10,7 +10,7 @@ public class Battlefield extends JPanel implements Constants {
 	private JPanel battlefieldPanel;
 	private GameMenu gameMenu;
 	
-	public Battlefield(GameClient ui, Player player) {
+	public Battlefield(Player player) {
 		this.ui = ui;
 		this.player = player;
 		gameMenu = new GameMenu();

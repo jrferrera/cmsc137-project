@@ -13,15 +13,13 @@ import javax.swing.JTextField;
 
 
 public class ChatBox extends JPanel implements ActionListener, KeyListener {
-	public GameClient gameClient;
 	private JTextArea messageBox;
 	private JTextField textfield;
 	private JLabel usernameLabel;
 	private JButton sendButton;
 	private JScrollPane scrollbar;
 		
-	public ChatBox(GameClient gameClient, String username) {
-		this.gameClient = gameClient;
+	public ChatBox(String username) {
 		
 		messageBox = new JTextArea(10,10);
 		textfield = new JTextField();
@@ -53,7 +51,7 @@ public class ChatBox extends JPanel implements ActionListener, KeyListener {
 	}
 	
 	public void sendMessage() {
-		gameClient.sendToServer("CHAT_ALL|" + "chatMessage=" + usernameLabel.getText() + ": " + textfield.getText());
+		GameElement.gameClient.sendToServer("CHAT_ALL|" + "chatMessage=" + usernameLabel.getText() + ": " + textfield.getText());
 	}
 	
 	public void appendMessage(String message) {
