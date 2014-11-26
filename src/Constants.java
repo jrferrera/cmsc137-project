@@ -36,5 +36,5 @@ public interface Constants {
 	// Background Images
 	public static final String MAIN_MENU_BACKGROUND = "MainMenuBackground.jpg";
 	public static final String GAME_PORTAL_BACKGROUND = "MainMenuBackground.jpg";
-	public static final String BATTLEFIELD_BACKGROUND = "MainMenuBackground.jpg";
+	public static final String BATTLEFIELD_BACKGROUND = "BattlefieldBackground.jpg";
 }

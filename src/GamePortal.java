@@ -39,6 +39,6 @@ public class GamePortal extends JPanel implements Constants, ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		GameElement.gameClient.changeScreen(new Battlefield(player));
+		GameElement.gameClient.changeScreen(new BattleScreen(player));
 	}
 }

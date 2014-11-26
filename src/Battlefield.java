@@ -5,20 +5,8 @@ import javax.swing.JPanel;
 
 
 public class Battlefield extends JPanel implements Constants {
-	public GameClient ui;
-	public Player player;
-	private JPanel battlefieldPanel;
-	private GameMenu gameMenu;
-	
-	public Battlefield(Player player) {
-		this.ui = ui;
-		this.player = player;
-		gameMenu = new GameMenu();
+	public Battlefield() {
 		
-		battlefieldPanel = new JPanel(new BorderLayout());
-		battlefieldPanel.add(gameMenu, BorderLayout.SOUTH);
-		
-		add(battlefieldPanel);
 	}
 	
 	public void paintComponent(Graphics g) {
