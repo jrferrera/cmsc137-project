@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -18,6 +19,7 @@ public class BattleScreen extends JPanel implements Constants {
 		battlefield = new Battlefield();
 		gameStatistics = new GameStatistics(player);
 		
+		setSize(new Dimension(800, 600));
 		battleScreenPanel = new JPanel(new BorderLayout());
 		battleScreenPanel.add(player.getChatBox(), BorderLayout.EAST);
 		battleScreenPanel.add(gameMenu, BorderLayout.SOUTH);
