@@ -18,7 +18,7 @@ public class GameMenu extends JPanel implements Constants, ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()){
-			case "Quit Game"	:	
+			case "Quit Game"	:	System.exit(0);
 									break;
 		}
 	}

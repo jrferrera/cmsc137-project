@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 
+<<<<<<< HEAD:src/BattleScreen.java
 public class BattleScreen extends JPanel implements Constants {
 	public GameClient ui;
 	public Player player;
@@ -17,8 +18,11 @@ public class BattleScreen extends JPanel implements Constants {
 		
 		battlefieldPanel = new JPanel(new BorderLayout());
 		battlefieldPanel.add(gameMenu, BorderLayout.SOUTH);
+=======
+public class Battlefield extends JPanel implements Constants {
+	public Battlefield() {
+>>>>>>> origin/jeff:src/Battlefield.java
 		
-		add(battlefieldPanel);
 	}
 	
 	public void paintComponent(Graphics g) {

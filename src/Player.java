@@ -10,6 +10,9 @@ public class Player implements Constants {
 	private ChatBox chatBox;
 	private Character[] characters;
 	
+	private int enemyCharactersDefeated;
+	private int ownCharacterDeathCount;
+	
 	public Player(String username, int port, InetAddress address) {
 		setUsername(username);
 		setPort(port);
@@ -17,6 +20,9 @@ public class Player implements Constants {
 		
 		characters = new Character[MAXIMUM_CHARACTER_COUNT];
 		chatBox = new ChatBox(username);
+		
+		setEnemyCharactersDefeated(0);
+		setOwnCharacterDeathCount(0);
 	}
 
 	public String getUsername() {
@@ -77,5 +83,21 @@ public class Player implements Constants {
 
 	public void setCharacter(Character[] character) {
 		this.characters = character;
+	}
+
+	public int getOwnCharacterDeathCount() {
+		return ownCharacterDeathCount;
+	}
+
+	public void setOwnCharacterDeathCount(int ownCharacterDeathCount) {
+		this.ownCharacterDeathCount = ownCharacterDeathCount;
+	}
+
+	public int getEnemyCharactersDefeated() {
+		return enemyCharactersDefeated;
+	}
+
+	public void setEnemyCharactersDefeated(int enemyCharactersDefeated) {
+		this.enemyCharactersDefeated = enemyCharactersDefeated;
 	}
 }
