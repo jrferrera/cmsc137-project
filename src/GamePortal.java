@@ -52,12 +52,8 @@ public class GamePortal extends JPanel implements Constants, ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
 		GameElement.gameClient.sendToServer("READY");
 		this.startBattleButton.setEnabled(false);
 		this.startBattleButton.setText("Ready");
-=======
-		GameElement.gameClient.changeScreen(new BattleScreen(player));
->>>>>>> origin/jeff
 	}
 }
