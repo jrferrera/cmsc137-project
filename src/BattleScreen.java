@@ -6,19 +6,25 @@ import javax.swing.JPanel;
 
 public class BattleScreen extends JPanel implements Constants {
 	private Player player;
-	private JPanel battlefieldPanel;
+	private JPanel battleScreenPanel;
+	private JPanel fieldPanel;
+	private Battlefield battlefield;
 	private GameStatistics gameStatistics;
 	private GameMenu gameMenu;
 	
 	public BattleScreen(Player player) {
 		this.player = player;
 		gameMenu = new GameMenu();
-		
-		battlefieldPanel = new JPanel(new BorderLayout());
+		battlefield = new Battlefield();
 		gameStatistics = new GameStatistics(player);
 		
-		battlefieldPanel.add(gameStatistics, BorderLayout.NORTH);
-		battlefieldPanel.add(gameMenu, BorderLayout.SOUTH);
+		battleScreenPanel = new JPanel(new BorderLayout());
+		battleScreenPanel.add(player.getChatBox(), BorderLayout.EAST);
+		battleScreenPanel.add(gameMenu, BorderLayout.SOUTH);
+		battleScreenPanel.add(gameStatistics, BorderLayout.NORTH);
+		battleScreenPanel.add(battlefield, BorderLayout.CENTER);
+		
+		add(battleScreenPanel);
 	}
 	
 	public void paintComponent(Graphics g) {
