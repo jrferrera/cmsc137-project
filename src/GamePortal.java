@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -25,11 +26,15 @@ public class GamePortal extends JPanel implements Constants, ActionListener {
 		gamePortalPanel = new JPanel();
 		
 		gamePortalPanel.setSize(new Dimension(300, 300));
-		gamePortalPanel.setLayout(new GridLayout(1, 1));
-		gamePortalPanel.add(player.getChatBox());
+		this.setLayout(new BorderLayout());
+		gamePortalPanel.setLayout(new GridLayout());
 		gamePortalPanel.add(startBattleButton);
 		
-		add(gamePortalPanel);
+		JPanel gamePortalSidePanel=new JPanel();
+		gamePortalSidePanel.setPreferredSize(new Dimension(150,300));
+		gamePortalSidePanel.add(player.getChatBox());
+		add(gamePortalSidePanel,BorderLayout.EAST);
+		add(gamePortalPanel,BorderLayout.CENTER);
 	}
 
 	public JButton getStartBattleButton() {

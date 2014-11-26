@@ -100,7 +100,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 			}else if(connected && serverData.startsWith("ENOUGH_PLAYERS")){
 				gp.getStartBattleButton().setEnabled(true);
 			}else if(connected && serverData.startsWith("START_BATTLE")){
-				this.changeScreen(new GameScreen(player));
+				this.changeScreen(new BattleScreen(player));
 			}else if(connected) {
 				System.out.println("Connected");
 			}
