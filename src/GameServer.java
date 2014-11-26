@@ -14,6 +14,7 @@ public class GameServer implements Runnable, Constants {
 	
 	private Player player;
 	private int playerCount = 0;
+	private int readyPlayers=0;
 	private HashMap<String, String> hashData;
 	
 	public GameServer() {
@@ -82,16 +83,21 @@ public class GameServer implements Runnable, Constants {
 							playerCount++;
 						}catch(Exception e) { }
 						
-						sendToClient(player, "CONNECTED|" + player.toString());
+						sendToClient(player, "CONNECTED|"+"playerCount="+playerCount+"|"+ player.toString());
 						
-						if(playerCount == MINIMUM_PLAYER_COUNT || playerCount == MAXIMUM_PLAYER_COUNT) {
-							
+						if(playerCount >= MINIMUM_PLAYER_COUNT && playerCount <= MAXIMUM_PLAYER_COUNT) {
+							broadcast("ENOUGH_PLAYERS");
 						}
 					}else if(clientData.startsWith("CHAT_ALL")) {
 						System.out.println("Message received");
 						
 						hashData = GameUtility.parser(clientData);
 						broadcast("CHAT_ALL|" + "chatMessage=" + hashData.get("chatMessage"));
+					}else if(clientData.startsWith("READY")){
+						readyPlayers++;
+						if(readyPlayers==playerCount){
+							broadcast("START_BATTLE");
+						}
 					}
 			}
 		}

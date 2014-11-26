@@ -21,7 +21,7 @@ public class GamePortal extends JPanel implements Constants, ActionListener {
 		player.setChatBox(chatBox);
 		startBattleButton = new JButton("Warp to Battlefield");
 		startBattleButton.addActionListener(this);
-		
+		startBattleButton.setEnabled(false);
 		gamePortalPanel = new JPanel();
 		
 		gamePortalPanel.setSize(new Dimension(300, 300));
@@ -32,6 +32,14 @@ public class GamePortal extends JPanel implements Constants, ActionListener {
 		add(gamePortalPanel);
 	}
 
+	public JButton getStartBattleButton() {
+		return startBattleButton;
+	}
+
+	public void setStartBattleButton(JButton startBattleButton) {
+		this.startBattleButton = startBattleButton;
+	}
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
@@ -39,6 +47,8 @@ public class GamePortal extends JPanel implements Constants, ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		GameElement.gameClient.changeScreen(new Battlefield(player));
+		GameElement.gameClient.sendToServer("READY");
+		this.startBattleButton.setEnabled(false);
+		this.startBattleButton.setText("Ready");
 	}
 }

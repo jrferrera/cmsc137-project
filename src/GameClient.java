@@ -19,6 +19,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 	private HashMap<String, String> hashData;
 	private String host;
 	boolean connected;
+	private GamePortal gp;
 	
 	public GameClient() {
 		setTitle(GAME_TITLE);
@@ -82,7 +83,11 @@ public class GameClient extends JFrame implements Constants, Runnable {
 					address = InetAddress.getByName(hashData.get("address").substring(1));
 					player = new Player(hashData.get("username"), Integer.parseInt(hashData.get("port")), address);
 					setTitle(GAME_TITLE + "::" + player.getUsername());
-					changeScreen(new GamePortal(player));
+					gp=new GamePortal(player);
+					changeScreen(gp);
+					if(Integer.parseInt(hashData.get("playerCount"))>1){
+						gp.getStartBattleButton().setEnabled(true);
+					}
 				} catch (UnknownHostException e) {
 					e.printStackTrace();
 				}
@@ -92,6 +97,10 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				hashData = GameUtility.parser(serverData);
 				
 				player.getChatBox().appendMessage(hashData.get("chatMessage"));
+			}else if(connected && serverData.startsWith("ENOUGH_PLAYERS")){
+				gp.getStartBattleButton().setEnabled(true);
+			}else if(connected && serverData.startsWith("START_BATTLE")){
+				this.changeScreen(new GameScreen(player));
 			}else if(connected) {
 				System.out.println("Connected");
 			}
