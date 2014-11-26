@@ -25,7 +25,7 @@ public class ChatBox extends JPanel implements ActionListener, KeyListener {
 		textfield = new JTextField();
 		usernameLabel = new JLabel(username);
 		sendButton = new JButton("Send");
-		scrollbar = new JScrollPane(messageBox, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollbar = new JScrollPane(messageBox, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		messageBox.setFocusable(false);
 		sendButton.addActionListener(this);

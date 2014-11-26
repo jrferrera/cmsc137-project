@@ -4,13 +4,13 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 
-public class Battlefield extends JPanel implements Constants {
+public class GameScreen extends JPanel implements Constants {
 	public GameClient ui;
 	public Player player;
 	private JPanel battlefieldPanel;
 	private GameMenu gameMenu;
 	
-	public Battlefield(Player player) {
+	public GameScreen(Player player) {
 		this.ui = ui;
 		this.player = player;
 		gameMenu = new GameMenu();
