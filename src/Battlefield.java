@@ -8,11 +8,11 @@ import javax.swing.JPanel;
 public class Battlefield extends JPanel implements Constants {
 	private int height;
 	private int width;
-	public Battlefield() {
+
+	public Battlefield(Player player) {
 		height=640;
 		width=640;
 		this.setPreferredSize(new Dimension(width,height));
-		
 	}
 	
 	public void paintComponent(Graphics g) {

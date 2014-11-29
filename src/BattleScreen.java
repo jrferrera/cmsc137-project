@@ -16,7 +16,7 @@ public class BattleScreen extends JPanel implements Constants {
 	public BattleScreen(Player player) {
 		this.player = player;
 		gameMenu = new GameMenu();
-		battlefield = new Battlefield();
+		battlefield = new Battlefield(player);
 		gameStatistics = new GameStatistics(player);
 		
 		setPreferredSize(new Dimension(800, 700));
@@ -29,8 +29,6 @@ public class BattleScreen extends JPanel implements Constants {
 		add(battlefield,BorderLayout.CENTER);
 		add(gameMenu, BorderLayout.SOUTH);
 		add(gameStatistics, BorderLayout.NORTH);
-
-
 	}
 	
 	public void paintComponent(Graphics g) {

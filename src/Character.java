@@ -1,5 +1,7 @@
+import java.awt.Graphics;
 
-public class Character {
+
+public class Character implements Constants {
 	private float hp;
 	private float mp;
 	private float attack;

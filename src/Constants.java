@@ -32,9 +32,13 @@ public interface Constants {
 	public static final String BACKGROUND_LOCATION = "assets/images/backgrounds";
 	public static final String ICON_LOCATION = "assets/images/icons";
 	public static final String BUTTON_LOCATION = "assets/images/buttons";
+	public static final String CHARACTER_LOCATION = "assets/images/characters";
 	
 	// Background Images
 	public static final String MAIN_MENU_BACKGROUND = "MainMenuBackground.jpg";
 	public static final String GAME_PORTAL_BACKGROUND = "MainMenuBackground.jpg";
 	public static final String BATTLEFIELD_BACKGROUND = "BattlefieldBackground.jpg";
+	
+	// Character Images
+	public static final String KNIGHT_IMAGE = "knight.jpg";
 }
