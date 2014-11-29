@@ -19,11 +19,11 @@ public class BattleScreen extends JPanel implements Constants {
 		battlefield = new Battlefield();
 		gameStatistics = new GameStatistics(player);
 		
-		setPreferredSize(new Dimension(800, 600));
+		setPreferredSize(new Dimension(800, 700));
 		this.setLayout(new BorderLayout());
 		
 		JPanel battleScreenSidePanel=new JPanel();
-		battleScreenSidePanel.setPreferredSize(new Dimension(150,300));
+		battleScreenSidePanel.setPreferredSize(new Dimension(160,300));
 		battleScreenSidePanel.add(player.getChatBox());
 		add(battleScreenSidePanel,BorderLayout.EAST);
 		add(battlefield,BorderLayout.CENTER);
