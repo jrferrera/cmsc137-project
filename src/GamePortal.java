@@ -27,7 +27,7 @@ public class GamePortal extends JPanel implements Constants, ActionListener {
 		
 		gamePortalPanel.setSize(new Dimension(300, 300));
 		this.setLayout(new BorderLayout());
-		gamePortalPanel.setLayout(new GridLayout());
+		//gamePortalPanel.setLayout(new GridLayout());
 		gamePortalPanel.add(startBattleButton);
 		
 		JPanel gamePortalSidePanel=new JPanel();

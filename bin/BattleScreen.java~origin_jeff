@@ -1,12 +1,11 @@
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
 
 public class BattleScreen extends JPanel implements Constants {
-	private Player player;
+	public Player player;
 	private JPanel battleScreenPanel;
 	private JPanel fieldPanel;
 	private Battlefield battlefield;
@@ -19,18 +18,13 @@ public class BattleScreen extends JPanel implements Constants {
 		battlefield = new Battlefield();
 		gameStatistics = new GameStatistics(player);
 		
-		setPreferredSize(new Dimension(800, 600));
-		this.setLayout(new BorderLayout());
+		battleScreenPanel = new JPanel(new BorderLayout());
+		battleScreenPanel.add(player.getChatBox(), BorderLayout.EAST);
+		battleScreenPanel.add(gameMenu, BorderLayout.SOUTH);
+		battleScreenPanel.add(gameStatistics, BorderLayout.NORTH);
+		battleScreenPanel.add(battlefield, BorderLayout.CENTER);
 		
-		JPanel battleScreenSidePanel=new JPanel();
-		battleScreenSidePanel.setPreferredSize(new Dimension(150,300));
-		battleScreenSidePanel.add(player.getChatBox());
-		add(battleScreenSidePanel,BorderLayout.EAST);
-		add(battlefield,BorderLayout.CENTER);
-		add(gameMenu, BorderLayout.SOUTH);
-		add(gameStatistics, BorderLayout.NORTH);
-
-
+		add(battleScreenPanel);
 	}
 	
 	public void paintComponent(Graphics g) {
