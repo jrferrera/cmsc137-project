@@ -50,4 +50,11 @@ public class Character {
 		this.attack = attack;
 	}
 	
+	public String getCharacterStringData() {
+		String data;
+		
+		data = "x=" + this.x + "|y=" + this.y + "|hp=" + this.hp + "|mp=" + this.mp + "|attack=" + this.attack + "|defense=" + this.defense;
+		return data;
+	}
+	
 }

@@ -3,6 +3,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class GameServer implements Runnable, Constants {
 	private DatagramSocket serverSocket;
@@ -57,7 +58,7 @@ public class GameServer implements Runnable, Constants {
 
 	public void run() {
 		while(true){
-			byte[] buffer = new byte[256];
+			byte[] buffer = new byte[512];
 			DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 			
 			try {
@@ -74,12 +75,77 @@ public class GameServer implements Runnable, Constants {
 						try {
 							player = new Player(hashData.get("username"), packet.getPort(), packet.getAddress());
 							
+							
 							for(int index = 0; index < MAXIMUM_CHARACTER_COUNT; index++) {
 								String characterType = hashData.get("character" + index);
 								player.addCharacter(characterType, index);
 							}
 							
+							if(playerCount == 0) {
+								player.getCharacters()[0].setX(0);
+								player.getCharacters()[0].setY(0);
+								
+								player.getCharacters()[1].setX(2);
+								player.getCharacters()[1].setY(0);
+								
+								player.getCharacters()[2].setX(1);
+								player.getCharacters()[2].setY(1);
+								
+								player.getCharacters()[3].setX(0);
+								player.getCharacters()[3].setY(2);
+								
+								player.getCharacters()[4].setX(2);
+								player.getCharacters()[4].setY(2);
+							}else if(playerCount == 1) {
+								player.getCharacters()[0].setX(13);
+								player.getCharacters()[0].setY(13);
+								
+								player.getCharacters()[1].setX(15);
+								player.getCharacters()[1].setY(13);
+								
+								player.getCharacters()[2].setX(14);
+								player.getCharacters()[2].setY(14);
+								
+								player.getCharacters()[3].setX(13);
+								player.getCharacters()[3].setY(15);
+								
+								player.getCharacters()[4].setX(15);
+								player.getCharacters()[4].setY(15);
+							}else if(playerCount == 2) {
+								player.getCharacters()[0].setX(13);
+								player.getCharacters()[0].setY(0);
+								
+								player.getCharacters()[1].setX(15);
+								player.getCharacters()[1].setY(0);
+								
+								player.getCharacters()[2].setX(14);
+								player.getCharacters()[2].setY(1);
+								
+								player.getCharacters()[3].setX(13);
+								player.getCharacters()[3].setY(2);
+								
+								player.getCharacters()[4].setX(15);
+								player.getCharacters()[4].setY(2);
+							}else if(playerCount == 3) {
+								player.getCharacters()[0].setX(0);
+								player.getCharacters()[0].setY(13);
+								
+								player.getCharacters()[1].setX(2);
+								player.getCharacters()[1].setY(13);
+								
+								player.getCharacters()[2].setX(1);
+								player.getCharacters()[2].setY(14);
+								
+								player.getCharacters()[3].setX(0);
+								player.getCharacters()[3].setY(15);
+								
+								player.getCharacters()[4].setX(2);
+								player.getCharacters()[4].setY(15);
+							}
+							
+							System.out.println(clientData);
 							gameState.updatePlayer(player.getUsername(), player);
+							
 							playerCount++;
 						}catch(Exception e) { }
 						
@@ -96,7 +162,22 @@ public class GameServer implements Runnable, Constants {
 					}else if(clientData.startsWith("READY")){
 						readyPlayers++;
 						if(readyPlayers==playerCount){
-							broadcast("START_BATTLE");
+							String playerName;
+							
+							for(Iterator<?> i = gameState.getPlayers().keySet().iterator(); i.hasNext();) {
+								String message = "INITIALIZE_PLAYERS|";
+								playerName = (String)i.next();
+								Player p = (Player)gameState.getPlayers().get(playerName);
+								message += "username=" + playerName;
+								
+								for(int j = 0; j < MAXIMUM_CHARACTER_COUNT; j++){
+									message += "|character" + j + "X=" + p.getCharacters()[j].getX() + "|character" + j + "Y=" + p.getCharacters()[j].getY() + "|character" + j + "=" + p.getCharacters()[j].getClass().toString().substring(6);
+								}
+								
+								broadcast(message);
+							}
+							
+							broadcast("START_BATTLE|");
 						}
 					}
 			}

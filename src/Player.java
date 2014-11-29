@@ -24,6 +24,15 @@ public class Player implements Constants {
 		setEnemyCharactersDefeated(0);
 		setOwnCharacterDeathCount(0);
 	}
+	
+	public Player(String username) {
+		setUsername(username);
+		
+		characters = new Character[MAXIMUM_CHARACTER_COUNT];
+		
+		setEnemyCharactersDefeated(0);
+		setOwnCharacterDeathCount(0);
+	}
 
 	public String getUsername() {
 		return username;
@@ -76,12 +85,22 @@ public class Player implements Constants {
 		
 		return playerData;
 	}
+	
+	public String getPlayerStringData() {
+		String playerData;
+		
+		playerData = "username=" + username;
+		
+		
+		
+		return playerData;
+	}
 
-	public Character[] getCharacter() {
+	public Character[] getCharacters() {
 		return characters;
 	}
 
-	public void setCharacter(Character[] character) {
+	public void setCharacters(Character[] character) {
 		this.characters = character;
 	}
 

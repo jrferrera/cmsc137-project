@@ -15,6 +15,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 	private Thread gameThread;
 	private DatagramSocket clientSocket;
 	private Player player;
+	private GameState gameState;
 	private String serverData;
 	private HashMap<String, String> hashData;
 	private String host;
@@ -36,7 +37,8 @@ public class GameClient extends JFrame implements Constants, Runnable {
 		host = "127.0.0.1";
 		connected = false;
 		serverData = "";
-				
+		
+		gameState = new GameState();
 		gameThread = new Thread(this);
 		changeScreen(new MainMenu(player));
 		
@@ -65,7 +67,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 
 	public void run() {
 		while(true){
-			byte[] buffer = new byte[256];
+			byte[] buffer = new byte[512];
 			DatagramPacket packet = new DatagramPacket(buffer, buffer.length);			
 			
 			try {
@@ -99,6 +101,18 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				player.getChatBox().appendMessage(hashData.get("chatMessage"));
 			}else if(connected && serverData.startsWith("ENOUGH_PLAYERS")){
 				gp.getStartBattleButton().setEnabled(true);
+			}else if(connected && serverData.startsWith("INITIALIZE_PLAYERS")){
+				hashData = GameUtility.parser(serverData);
+				
+				Player p = new Player(hashData.get("username"));
+				
+				for(int i = 0; i < MAXIMUM_CHARACTER_COUNT; i++) {
+					p.addCharacter(hashData.get("character" + i), i);
+					p.getCharacters()[i].setX(Integer.parseInt(hashData.get("character" + i + "X")));
+					p.getCharacters()[i].setY(Integer.parseInt(hashData.get("character" + i + "Y")));
+				}
+				
+				gameState.updatePlayer(player.getUsername(), p);
 			}else if(connected && serverData.startsWith("START_BATTLE")){
 				this.changeScreen(new BattleScreen(player));
 			}else if(connected) {

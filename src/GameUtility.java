@@ -27,7 +27,7 @@ public class GameUtility implements Constants{
 			String token = st.nextToken();
 			String attribute = token.substring(0, token.indexOf("="));
 			String value=token.substring(token.indexOf("=")+1);
-			hm.put(attribute, value);
+			hm.put(attribute, value.trim());
 		}
 	
 		return hm;
