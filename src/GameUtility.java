@@ -1,5 +1,6 @@
 import java.awt.Image;
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -14,6 +15,19 @@ public class GameUtility implements Constants{
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public static Image loadImage(String filename){
+		
+		try{
+			InputStream is = GameUtility.class.getResourceAsStream(filename);
+			return ImageIO.read(is);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	
 	}
 	
 	public static HashMap<String, String> parser(String str){

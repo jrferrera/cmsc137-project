@@ -1,4 +1,4 @@
-import java.awt.Graphics;
+import java.awt.Image;
 
 
 public class Character implements Constants {
@@ -8,6 +8,7 @@ public class Character implements Constants {
 	private float defense;
 	private int x;
 	private int y;
+	private Image characterImage;
 	
 	public Character() {
 		setHp(200);
@@ -52,6 +53,14 @@ public class Character implements Constants {
 		this.attack = attack;
 	}
 	
+	public Image getCharacterImage() {
+		return characterImage;
+	}
+
+	public void setCharacterImage(Image characterImage) {
+		this.characterImage = characterImage;
+	}
+
 	public String getCharacterStringData() {
 		String data;
 		

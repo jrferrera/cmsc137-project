@@ -172,6 +172,7 @@ public class GameServer implements Runnable, Constants {
 								
 								for(int j = 0; j < MAXIMUM_CHARACTER_COUNT; j++){
 									message += "|character" + j + "X=" + p.getCharacters()[j].getX() + "|character" + j + "Y=" + p.getCharacters()[j].getY() + "|character" + j + "=" + p.getCharacters()[j].getClass().toString().substring(6);
+									System.out.println(p.getUsername()+" "+p.getCharacters()[j].getX()+" "+p.getCharacters()[j].getY());
 								}
 								
 								broadcast(message);

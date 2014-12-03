@@ -15,7 +15,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 	private Thread gameThread;
 	private DatagramSocket clientSocket;
 	private Player player;
-	private GameState gameState;
+	static GameState gameState;
 	private String serverData;
 	private HashMap<String, String> hashData;
 	private String host;
@@ -105,14 +105,14 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				hashData = GameUtility.parser(serverData);
 				
 				Player p = new Player(hashData.get("username"));
-				
+				System.out.println(hashData);
 				for(int i = 0; i < MAXIMUM_CHARACTER_COUNT; i++) {
 					p.addCharacter(hashData.get("character" + i), i);
 					p.getCharacters()[i].setX(Integer.parseInt(hashData.get("character" + i + "X")));
 					p.getCharacters()[i].setY(Integer.parseInt(hashData.get("character" + i + "Y")));
 				}
 				
-				gameState.updatePlayer(player.getUsername(), p);
+				gameState.updatePlayer(p.getUsername(), p);
 			}else if(connected && serverData.startsWith("START_BATTLE")){
 				this.changeScreen(new BattleScreen(player));
 			}else if(connected) {

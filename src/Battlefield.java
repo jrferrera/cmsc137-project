@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
@@ -26,5 +27,21 @@ public class Battlefield extends JPanel implements Constants {
 		for(int i=0;i<height;i+=height/16){
 			g.drawLine(0, i, width, i);
 		}
+		
+		drawScene(g);
 	}
+	
+	private void drawScene(Graphics g){
+		String playerName;
+		for(Iterator<?> i = GameClient.gameState.getPlayers().keySet().iterator(); i.hasNext();) {
+			playerName = (String)i.next();
+			Player p = (Player)GameClient.gameState.getPlayers().get(playerName);
+			for(int j=0;j<GameUtility.MAXIMUM_CHARACTER_COUNT;j++){
+			Character temp=p.getCharacters()[j];
+			g.drawImage(GameUtility.getImage(CHARACTER_LOCATION+"/"+KNIGHT_IMAGE),temp.getX()*width/16,temp.getY()*height/16,width/16,height/16,null);
+			
+			}
+		}
+	}
+	
 }
