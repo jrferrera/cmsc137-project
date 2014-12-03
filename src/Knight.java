@@ -1,3 +1,5 @@
+import javax.swing.ImageIcon;
+
 
 public class Knight extends Character{
 	public Knight() {
@@ -5,6 +7,6 @@ public class Knight extends Character{
 		setAttack(15);
 		setDefense(10);
 		
-		//setCharacterImage(GameUtility.getImage(CHARACTER_LOCATION+"/"+KNIGHT_IMAGE));
+		setIcon(new ImageIcon(CHARACTER_LOCATION + "/" + KNIGHT_IMAGE));
 	}
 }

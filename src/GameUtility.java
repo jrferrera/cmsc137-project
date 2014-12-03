@@ -17,19 +17,6 @@ public class GameUtility implements Constants{
 		}
 	}
 	
-	public static Image loadImage(String filename){
-		
-		try{
-			InputStream is = GameUtility.class.getResourceAsStream(filename);
-			return ImageIO.read(is);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-	
-	}
-	
 	public static HashMap<String, String> parser(String str){
 		StringTokenizer st = new StringTokenizer(str, "|");
 		HashMap<String, String> hm = new HashMap<String, String>();

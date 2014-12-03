@@ -40,5 +40,8 @@ public interface Constants {
 	public static final String BATTLEFIELD_BACKGROUND = "BattlefieldBackground.jpg";
 	
 	// Character Images
-	public static final String KNIGHT_IMAGE = "knight.jpg";
+	public static final String KNIGHT_IMAGE = "knight.png";
+	public static final String PRIEST_IMAGE = "priest.png";
+	public static final String WIZARD_IMAGE = "wizard.png";
+	public static final String HUNTER_IMAGE = "hunter.png";
 }

@@ -1,14 +1,17 @@
 import java.awt.Image;
 
+import javax.swing.Icon;
+import javax.swing.JLabel;
 
-public class Character implements Constants {
+
+public class Character extends JLabel implements Constants {
 	private float hp;
 	private float mp;
 	private float attack;
 	private float defense;
 	private int x;
 	private int y;
-	private Image characterImage;
+	private Icon characterImage;
 	
 	public Character() {
 		setHp(200);
@@ -53,11 +56,11 @@ public class Character implements Constants {
 		this.attack = attack;
 	}
 	
-	public Image getCharacterImage() {
+	public Icon getCharacterImage() {
 		return characterImage;
 	}
 
-	public void setCharacterImage(Image characterImage) {
+	public void setCharacterImage(Icon characterImage) {
 		this.characterImage = characterImage;
 	}
 
