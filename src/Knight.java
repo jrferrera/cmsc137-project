@@ -6,7 +6,8 @@ public class Knight extends Character{
 		super();	
 		setAttack(15);
 		setDefense(10);
-		
+		setAttackRange(1);
+		setWalkRange(3);
 		setIcon(new ImageIcon(CHARACTER_LOCATION + "/" + KNIGHT_IMAGE));
 	}
 }

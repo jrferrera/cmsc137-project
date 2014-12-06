@@ -1,26 +1,33 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
 
 
-public class Character extends JButton implements Constants, ActionListener {
+public class Character extends JButton implements Constants, ActionListener, KeyListener {
 	private float hp;
 	private float mp;
 	private float attack;
 	private float defense;
 	private int xPosition;
 	private int yPosition;
+	private int attackRange;
+	private int walkRange;
 	private Icon characterImage;
 	
 	public Character() {
 		setHp(200);
 		setMp(100);
 		setBorderPainted(false);
+		setWalkRange(0);
 		setBackground(new Color(Color.TRANSLUCENT));
 		setOpaque(false);
+		
+		addActionListener(this);
 	}
 	
 	public float getDefense() {
@@ -76,10 +83,42 @@ public class Character extends JButton implements Constants, ActionListener {
 		return data;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
+		GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getWalkRange() {
+		return walkRange;
+	}
+
+	public void setWalkRange(int walkRange) {
+		this.walkRange = walkRange;
+	}
+
+	public int getAttackRange() {
+		return attackRange;
+	}
+
+	public void setAttackRange(int attackRange) {
+		this.attackRange = attackRange;
 	}
 	
 }

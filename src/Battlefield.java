@@ -4,9 +4,6 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.util.Iterator;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -32,6 +29,8 @@ public class Battlefield extends JPanel implements Constants {
 		for(int i = 0; i < 16; i++) {
 			for(int j = 0; j < 16; j++) {
 				blocks[i][j] = new Character();
+				blocks[i][j].setXPosition(i);
+				blocks[i][j].setYPosition(j);
 				blocks[i][j].setPreferredSize(new Dimension(width/16, height/16));
 			}
 		}
@@ -77,4 +76,22 @@ public class Battlefield extends JPanel implements Constants {
 	 
 	}
 	
+	public void highlightBlock(int x, int y) {
+		try {
+			blocks[x][y].setBackground(Color.GREEN);
+			blocks[x][y].setOpaque(true);
+		} catch(Exception e) {
+		}
+	}
+	
+	public void highlightField(int xOrigin, int yOrigin, int range) {
+		for(int i = 0; i < range; i ++) {
+			for(int j = 0; j < i; j++) {
+				highlightBlock(xOrigin + j, yOrigin + i);
+				highlightBlock(xOrigin - j, yOrigin - i);
+				highlightBlock(xOrigin - j, yOrigin + i);
+				highlightBlock(xOrigin + j, yOrigin - i);
+			}
+		}
+	}
 }

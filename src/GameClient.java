@@ -23,6 +23,14 @@ public class GameClient extends JFrame implements Constants, Runnable {
 	private GamePortal gp;
 	private BattleScreen battleScreen;
 	
+	public BattleScreen getBattleScreen() {
+		return battleScreen;
+	}
+
+	public void setBattleScreen(BattleScreen battleScreen) {
+		this.battleScreen = battleScreen;
+	}
+
 	public GameClient() {
 		setTitle(GAME_TITLE);
 		setMinimumSize(new Dimension(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT));

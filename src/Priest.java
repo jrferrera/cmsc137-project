@@ -6,7 +6,8 @@ public class Priest extends Character {
 		super();	
 		setAttack(15);
 		setDefense(10);
-		
+		setAttackRange(1);
+		setWalkRange(1);
 		setIcon(new ImageIcon(CHARACTER_LOCATION + "/" + PRIEST_IMAGE));
 	}
 }
