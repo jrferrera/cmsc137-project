@@ -84,7 +84,22 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
+		if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter() == null){
+			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
+			GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
+		}
+		else if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().getClass()==Character.class){
+			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
+			GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
+		}
+		else{
+			if(this.isOpaque()){
+				GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setXPosition(this.xPosition);
+				GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setYPosition(this.yPosition);
+				GameElement.gameClient.getBattleScreen().getBattlefield().refreshField();
+				GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(null);
+			}
+		}
 	}
 	
 	@Override

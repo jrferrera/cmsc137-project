@@ -11,7 +11,8 @@ public class Battlefield extends JPanel implements Constants {
 	private int height;
 	private int width;
 	private Character[][] blocks;
-
+	private Character activeCharacter;
+	
 	public Battlefield(Player player) {
 		height=640;
 		width=640;
@@ -87,7 +88,7 @@ public class Battlefield extends JPanel implements Constants {
 	
 	public void highlightBlock(int x, int y) {
 		try {
-			blocks[x][y].setBackground(Color.GREEN);
+			blocks[x][y].setBackground(new Color(0,150,150,40));
 			blocks[x][y].setOpaque(true);
 		} catch(Exception e) {
 		}
@@ -98,8 +99,17 @@ public class Battlefield extends JPanel implements Constants {
 		for(int i = xOrigin-range; i < xOrigin+range+1; i ++) {
 			for(int j = yOrigin-range; j < yOrigin+range+1; j++) {
 				highlightBlock(i,j);
-				
 			}
 		}
+	}
+
+
+	public Character getActiveCharacter() {
+		return activeCharacter;
+	}
+
+
+	public void setActiveCharacter(Character activeCharacter) {
+		this.activeCharacter = activeCharacter;
 	}
 }
