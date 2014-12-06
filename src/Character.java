@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,6 +19,8 @@ public class Character extends JButton implements Constants, ActionListener {
 		setHp(200);
 		setMp(100);
 		setBorderPainted(false);
+		setBackground(new Color(Color.TRANSLUCENT));
+		setOpaque(false);
 	}
 	
 	public float getDefense() {

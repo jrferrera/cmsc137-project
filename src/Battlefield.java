@@ -25,7 +25,6 @@ public class Battlefield extends JPanel implements Constants {
 		for(int i = 0; i < 16; i++) {
 			for(int j = 0; j < 16; j++) {
 				blocks[i][j] = new Character();
-				blocks[i][j].setBorderPainted(false);
 				blocks[i][j].setPreferredSize(new Dimension(width/16, height/16));
 			}
 		}
@@ -38,7 +37,6 @@ public class Battlefield extends JPanel implements Constants {
 			for(int j = 0; j < MAXIMUM_CHARACTER_COUNT; j++){
 				Character temp = p.getCharacters()[j];
 				temp.setPreferredSize(new Dimension(width/16,height/16));
-				temp.setText(playerName);
 				blocks[temp.getXPosition()][temp.getYPosition()] = temp;
 			}
 		}
