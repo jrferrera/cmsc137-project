@@ -7,7 +7,7 @@ public class Hunter extends Character {
 		setAttack(13);
 		setDefense(9);
 		setAttackRange(3);
-		setWalkRange(2);
+		setWalkRange(1);
 		setIcon(new ImageIcon(CHARACTER_LOCATION + "/" + HUNTER_IMAGE));
 	}
 }

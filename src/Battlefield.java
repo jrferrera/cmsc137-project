@@ -76,6 +76,15 @@ public class Battlefield extends JPanel implements Constants {
 	 
 	}
 	
+	public void removeHighlights(){
+		for(int i = 0; i < 16; i++) {
+			for(int j = 0; j < 16; j++) {
+				blocks[i][j].setBackground(new Color(Color.TRANSLUCENT));
+				blocks[i][j].setOpaque(false);
+			}
+		}
+	}
+	
 	public void highlightBlock(int x, int y) {
 		try {
 			blocks[x][y].setBackground(Color.GREEN);
@@ -85,12 +94,11 @@ public class Battlefield extends JPanel implements Constants {
 	}
 	
 	public void highlightField(int xOrigin, int yOrigin, int range) {
-		for(int i = 0; i < range; i ++) {
-			for(int j = 0; j < i; j++) {
-				highlightBlock(xOrigin + j, yOrigin + i);
-				highlightBlock(xOrigin - j, yOrigin - i);
-				highlightBlock(xOrigin - j, yOrigin + i);
-				highlightBlock(xOrigin + j, yOrigin - i);
+		removeHighlights();
+		for(int i = xOrigin-range; i < xOrigin+range+1; i ++) {
+			for(int j = yOrigin-range; j < yOrigin+range+1; j++) {
+				highlightBlock(i,j);
+				
 			}
 		}
 	}
