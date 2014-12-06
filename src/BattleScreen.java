@@ -31,6 +31,14 @@ public class BattleScreen extends JPanel implements Constants {
 		add(gameStatistics, BorderLayout.NORTH);
 	}
 	
+	public Battlefield getBattlefield() {
+		return battlefield;
+	}
+
+	public void setBattlefield(Battlefield battlefield) {
+		this.battlefield = battlefield;
+	}
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		

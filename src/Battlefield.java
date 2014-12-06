@@ -22,6 +22,13 @@ public class Battlefield extends JPanel implements Constants {
 		setLayout(new GridLayout(16,16));
 		blocks = new Character[16][16];
 		
+		refreshField();
+	}
+	
+	
+	public void refreshField(){
+		this.removeAll();
+		
 		for(int i = 0; i < 16; i++) {
 			for(int j = 0; j < 16; j++) {
 				blocks[i][j] = new Character();
@@ -41,13 +48,13 @@ public class Battlefield extends JPanel implements Constants {
 			}
 		}
 		
+		
 		for(int i = 0; i < 16; i++) {
 			for(int j = 0; j < 16; j++) {
 				add(blocks[i][j]);
 			}
 		}
 		revalidate();
-		
 	}
 	
 	public void paintComponent(Graphics g) {

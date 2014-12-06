@@ -21,6 +21,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 	private String host;
 	boolean connected;
 	private GamePortal gp;
+	private BattleScreen battleScreen;
 	
 	public GameClient() {
 		setTitle(GAME_TITLE);
@@ -114,7 +115,8 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				
 				gameState.updatePlayer(p.getUsername(), p);
 			}else if(connected && serverData.startsWith("START_BATTLE")){
-				this.changeScreen(new BattleScreen(player));
+				battleScreen=new BattleScreen(player);
+				this.changeScreen(battleScreen);
 			}else if(connected) {
 				System.out.println("Connected");
 			}
