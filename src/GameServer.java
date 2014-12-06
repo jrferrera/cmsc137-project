@@ -82,65 +82,65 @@ public class GameServer implements Runnable, Constants {
 							}
 							
 							if(playerCount == 0) {
-								player.getCharacters()[0].setX(0);
-								player.getCharacters()[0].setY(0);
+								player.getCharacters()[0].setXPosition(0);
+								player.getCharacters()[0].setYPosition(0);
 								
-								player.getCharacters()[1].setX(2);
-								player.getCharacters()[1].setY(0);
+								player.getCharacters()[1].setXPosition(2);
+								player.getCharacters()[1].setYPosition(0);
 								
-								player.getCharacters()[2].setX(1);
-								player.getCharacters()[2].setY(1);
+								player.getCharacters()[2].setXPosition(1);
+								player.getCharacters()[2].setYPosition(1);
 								
-								player.getCharacters()[3].setX(0);
-								player.getCharacters()[3].setY(2);
+								player.getCharacters()[3].setXPosition(0);
+								player.getCharacters()[3].setYPosition(2);
 								
-								player.getCharacters()[4].setX(2);
-								player.getCharacters()[4].setY(2);
+								player.getCharacters()[4].setXPosition(2);
+								player.getCharacters()[4].setYPosition(2);
 							}else if(playerCount == 1) {
-								player.getCharacters()[0].setX(13);
-								player.getCharacters()[0].setY(13);
+								player.getCharacters()[0].setXPosition(13);
+								player.getCharacters()[0].setYPosition(13);
 								
-								player.getCharacters()[1].setX(15);
-								player.getCharacters()[1].setY(13);
+								player.getCharacters()[1].setXPosition(15);
+								player.getCharacters()[1].setYPosition(13);
 								
-								player.getCharacters()[2].setX(14);
-								player.getCharacters()[2].setY(14);
+								player.getCharacters()[2].setXPosition(14);
+								player.getCharacters()[2].setYPosition(14);
 								
-								player.getCharacters()[3].setX(13);
-								player.getCharacters()[3].setY(15);
+								player.getCharacters()[3].setXPosition(13);
+								player.getCharacters()[3].setYPosition(15);
 								
-								player.getCharacters()[4].setX(15);
-								player.getCharacters()[4].setY(15);
+								player.getCharacters()[4].setXPosition(15);
+								player.getCharacters()[4].setYPosition(15);
 							}else if(playerCount == 2) {
-								player.getCharacters()[0].setX(13);
-								player.getCharacters()[0].setY(0);
+								player.getCharacters()[0].setXPosition(13);
+								player.getCharacters()[0].setYPosition(0);
 								
-								player.getCharacters()[1].setX(15);
-								player.getCharacters()[1].setY(0);
+								player.getCharacters()[1].setXPosition(15);
+								player.getCharacters()[1].setYPosition(0);
 								
-								player.getCharacters()[2].setX(14);
-								player.getCharacters()[2].setY(1);
+								player.getCharacters()[2].setXPosition(14);
+								player.getCharacters()[2].setYPosition(1);
 								
-								player.getCharacters()[3].setX(13);
-								player.getCharacters()[3].setY(2);
+								player.getCharacters()[3].setXPosition(13);
+								player.getCharacters()[3].setYPosition(2);
 								
-								player.getCharacters()[4].setX(15);
-								player.getCharacters()[4].setY(2);
+								player.getCharacters()[4].setXPosition(15);
+								player.getCharacters()[4].setYPosition(2);
 							}else if(playerCount == 3) {
-								player.getCharacters()[0].setX(0);
-								player.getCharacters()[0].setY(13);
+								player.getCharacters()[0].setXPosition(0);
+								player.getCharacters()[0].setYPosition(13);
 								
-								player.getCharacters()[1].setX(2);
-								player.getCharacters()[1].setY(13);
+								player.getCharacters()[1].setXPosition(2);
+								player.getCharacters()[1].setYPosition(13);
 								
-								player.getCharacters()[2].setX(1);
-								player.getCharacters()[2].setY(14);
+								player.getCharacters()[2].setXPosition(1);
+								player.getCharacters()[2].setYPosition(14);
 								
-								player.getCharacters()[3].setX(0);
-								player.getCharacters()[3].setY(15);
+								player.getCharacters()[3].setXPosition(0);
+								player.getCharacters()[3].setYPosition(15);
 								
-								player.getCharacters()[4].setX(2);
-								player.getCharacters()[4].setY(15);
+								player.getCharacters()[4].setXPosition(2);
+								player.getCharacters()[4].setYPosition(15);
 							}
 							
 							System.out.println(clientData);
@@ -171,8 +171,8 @@ public class GameServer implements Runnable, Constants {
 								message += "username=" + playerName;
 								
 								for(int j = 0; j < MAXIMUM_CHARACTER_COUNT; j++){
-									message += "|character" + j + "X=" + p.getCharacters()[j].getX() + "|character" + j + "Y=" + p.getCharacters()[j].getY() + "|character" + j + "=" + p.getCharacters()[j].getClass().toString().substring(6);
-									System.out.println(p.getUsername()+" "+p.getCharacters()[j].getX()+" "+p.getCharacters()[j].getY());
+									message += "|character" + j + "X=" + p.getCharacters()[j].getXPosition() + "|character" + j + "Y=" + p.getCharacters()[j].getYPosition() + "|character" + j + "=" + p.getCharacters()[j].getClass().toString().substring(6);
+									System.out.println(p.getUsername()+" "+p.getCharacters()[j].getXPosition()+" "+p.getCharacters()[j].getYPosition());
 								}
 								
 								broadcast(message);

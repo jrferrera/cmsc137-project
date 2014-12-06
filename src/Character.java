@@ -1,21 +1,23 @@
-import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Icon;
-import javax.swing.JLabel;
+import javax.swing.JButton;
 
 
-public class Character extends JLabel implements Constants {
+public class Character extends JButton implements Constants, ActionListener {
 	private float hp;
 	private float mp;
 	private float attack;
 	private float defense;
-	private int x;
-	private int y;
+	private int xPosition;
+	private int yPosition;
 	private Icon characterImage;
 	
 	public Character() {
 		setHp(200);
 		setMp(100);
+		setBorderPainted(false);
 	}
 	
 	public float getDefense() {
@@ -24,17 +26,17 @@ public class Character extends JLabel implements Constants {
 	public void setDefense(float defense) {
 		this.defense = defense;
 	}
-	public int getX() {
-		return x;
+	public int getXPosition() {
+		return xPosition;
 	}
-	public void setX(int x) {
-		this.x = x;
+	public void setXPosition(int x) {
+		this.xPosition = x;
 	}
-	public int getY() {
-		return y;
+	public int getYPosition() {
+		return yPosition;
 	}
-	public void setY(int y) {
-		this.y = y;
+	public void setYPosition(int y) {
+		this.yPosition = y;
 	}
 	
 	public float getHp() {
@@ -67,8 +69,14 @@ public class Character extends JLabel implements Constants {
 	public String getCharacterStringData() {
 		String data;
 		
-		data = "x=" + this.x + "|y=" + this.y + "|hp=" + this.hp + "|mp=" + this.mp + "|attack=" + this.attack + "|defense=" + this.defense;
+		data = "x=" + this.xPosition + "|y=" + this.yPosition + "|hp=" + this.hp + "|mp=" + this.mp + "|attack=" + this.attack + "|defense=" + this.defense;
 		return data;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

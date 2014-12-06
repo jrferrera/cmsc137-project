@@ -108,8 +108,8 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				System.out.println(hashData);
 				for(int i = 0; i < MAXIMUM_CHARACTER_COUNT; i++) {
 					p.addCharacter(hashData.get("character" + i), i);
-					p.getCharacters()[i].setX(Integer.parseInt(hashData.get("character" + i + "X")));
-					p.getCharacters()[i].setY(Integer.parseInt(hashData.get("character" + i + "Y")));
+					p.getCharacters()[i].setXPosition(Integer.parseInt(hashData.get("character" + i + "X")));
+					p.getCharacters()[i].setYPosition(Integer.parseInt(hashData.get("character" + i + "Y")));
 				}
 				
 				gameState.updatePlayer(p.getUsername(), p);
