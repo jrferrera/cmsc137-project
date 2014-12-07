@@ -38,7 +38,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		setBackground(new Color(Color.TRANSLUCENT));
 		setOpaque(false);
 		state=MOVE;
-		addActionListener(this);
+		addActionListener(this);		
 	}
 	
 	public float getDefense() {
@@ -99,23 +99,23 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter() == null && this.getState()!=ACTION){
 			if(this.owner!=null){
 				if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
-					GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
 					GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
+					GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
 				}
 			}
 		}
 		// If selected block is empty
 		else if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().getClass()==Character.class && this.getState()!=ACTION){
-			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
 			GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
+			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
 		}
 		else{
 			// Avoid overlapping characters
 			if(this.getClass() != Character.class && this.getState()!=ACTION){
 				if(this.owner!=null){
 					if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
-						GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
 						GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
+						GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
 					}
 				}
 			}
@@ -133,6 +133,16 @@ public class Character extends JButton implements Constants, ActionListener, Key
 					case ACTION:
 						
 						break;
+					case ATTACK:
+						Character ch = (Character) e.getSource();
+
+						if(bf.getActiveCharacter().getOwner() != ch.getOwner()) {
+							System.out.println(ch.getHp());
+							bf.getActiveCharacter().attack(ch);
+							System.out.println(ch.getHp());
+						}
+						
+						break;
 					case END_TURN:
 						bf.setActiveCharacter(null);
 						break;
@@ -140,6 +150,39 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			}
 		}
 		
+	}
+	
+	public boolean isDead(Character character) {
+		if(character.getHp() <= 0.0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public void attack(Character character) {
+		character.setHp(character.getHp() - attack);
+		
+		if(isDead(character)) {
+			character = new Character();
+			GameElement.gameClient.getBattleScreen().getBattlefield().revalidate();
+		}
+	}
+	
+	public boolean isWalkable(int x, int y) {
+		if(GameUtility.getDistance(xPosition, yPosition, x, y) <= walkRange) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public boolean isAttackable(int x, int y) {
+		if(GameUtility.getDistance(xPosition, yPosition, x, y) <= walkRange) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 
@@ -178,8 +221,11 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		// Attack
 		if(e.getKeyCode() == KeyEvent.VK_A) {
 			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, attackRange);
+			GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setState(ATTACK);
 		}else if(e.getKeyCode() == KeyEvent.VK_D) {
 			
+		}else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setState(ATTACK);
 		}
 	}
 

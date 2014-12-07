@@ -97,8 +97,10 @@ public class GameServer implements Runnable, Constants {
 								player.getCharacters()[4].setXPosition(2);
 								player.getCharacters()[4].setYPosition(2);
 							}else if(playerCount == 1) {
-								player.getCharacters()[0].setXPosition(13);
-								player.getCharacters()[0].setYPosition(13);
+//								player.getCharacters()[0].setXPosition(13);
+//								player.getCharacters()[0].setYPosition(13);
+								player.getCharacters()[0].setXPosition(1);
+								player.getCharacters()[0].setYPosition(3);
 								
 								player.getCharacters()[1].setXPosition(15);
 								player.getCharacters()[1].setYPosition(13);
