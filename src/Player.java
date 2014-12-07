@@ -76,6 +76,7 @@ public class Player implements Constants {
 		}else if(characterType.equals("Wizard")) {
 			this.characters[index] = new Wizard();
 		}
+		this.characters[index].setOwner(this);
 	}
 	
 	public String toString() {

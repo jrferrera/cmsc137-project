@@ -19,6 +19,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	private int walkRange;
 	private Icon characterImage;
 	private int state;
+	private Player owner;
 	
 	public Character() {
 		setHp(200);
@@ -85,10 +86,13 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		
 		if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter() == null){
-			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
-			GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
+			if(this.owner!=null){
+				if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
+					GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
+					GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
+				}
+			}
 		}
 		else if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().getClass()==Character.class){
 			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
@@ -96,8 +100,12 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		}
 		else{
 			if(this.getClass() != Character.class){
-				GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
-				GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
+				if(this.owner!=null){
+					if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
+						GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
+						GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
+					}
+				}
 			}
 			else if(this.isOpaque()){
 				Battlefield bf = GameElement.gameClient.getBattleScreen().getBattlefield();
@@ -117,6 +125,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 				}
 			}
 		}
+		
 	}
 	
 
@@ -161,6 +170,14 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Player getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Player owner) {
+		this.owner = owner;
 	}
 
 	
