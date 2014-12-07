@@ -139,6 +139,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 							bf.getActiveCharacter().attack(ch);
 							System.out.println(ch.getHp());
 						}
+						bf.removeHighlights();
 						bf.getActiveCharacter().setState(END_TURN);
 						bf.setActiveCharacter(null);
 						break;
