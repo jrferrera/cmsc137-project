@@ -86,7 +86,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter() == null){
+		if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter() == null && this.getState()!=ACTION){
 			if(this.owner!=null){
 				if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
 					GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
@@ -94,12 +94,12 @@ public class Character extends JButton implements Constants, ActionListener, Key
 				}
 			}
 		}
-		else if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().getClass()==Character.class){
+		else if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().getClass()==Character.class && this.getState()!=ACTION){
 			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
 			GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
 		}
 		else{
-			if(this.getClass() != Character.class){
+			if(this.getClass() != Character.class && this.getState()!=ACTION){
 				if(this.owner!=null){
 					if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
 						GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
