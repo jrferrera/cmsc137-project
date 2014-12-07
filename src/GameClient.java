@@ -15,6 +15,15 @@ public class GameClient extends JFrame implements Constants, Runnable {
 	private Thread gameThread;
 	private DatagramSocket clientSocket;
 	private Player player;
+	
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
 	static GameState gameState;
 	private String serverData;
 	private HashMap<String, String> hashData;

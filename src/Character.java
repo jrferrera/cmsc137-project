@@ -18,6 +18,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	private int attackRange;
 	private int walkRange;
 	private Icon characterImage;
+	private boolean moved;
 	
 	public Character() {
 		setHp(200);
@@ -26,7 +27,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		setWalkRange(0);
 		setBackground(new Color(Color.TRANSLUCENT));
 		setOpaque(false);
-		
+		this.moved=false;
 		addActionListener(this);
 	}
 	
@@ -93,10 +94,16 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
 		}
 		else{
-			if(this.isOpaque()){
+			if(this.getClass() != Character.class){
+				GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
+				GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
+			}
+			else if(this.isOpaque()){
 				GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setXPosition(this.xPosition);
 				GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setYPosition(this.yPosition);
 				GameElement.gameClient.getBattleScreen().getBattlefield().refreshField();
+				GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setMoved(true);
+				GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setEnabled(false);
 				GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(null);
 			}
 		}
@@ -134,6 +141,14 @@ public class Character extends JButton implements Constants, ActionListener, Key
 
 	public void setAttackRange(int attackRange) {
 		this.attackRange = attackRange;
+	}
+
+	public boolean isMoved() {
+		return moved;
+	}
+
+	public void setMoved(boolean moved) {
+		this.moved = moved;
 	}
 	
 }
