@@ -64,6 +64,7 @@ public class GameServer implements Runnable, Constants {
 			try {
      			serverSocket.receive(packet);
      			clientData = new String(buffer);
+     			System.out.println(clientData);
 			} catch(Exception e){ }
 			
 			switch(gameStateFlag) {
@@ -183,10 +184,14 @@ public class GameServer implements Runnable, Constants {
 							broadcast("START_BATTLE|");
 						}
 					}else if(clientData.startsWith("MOVE")){
-						System.out.println(clientData);
 						hashData = GameUtility.parser(clientData);
 						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setXPosition(Integer.parseInt(hashData.get("xPosition")));
 						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setYPosition(Integer.parseInt(hashData.get("yPosition")));
+						
+						broadcast(clientData);
+					}else if(clientData.startsWith("ATTACK")){
+						hashData = GameUtility.parser(clientData);
+						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Integer.parseInt(hashData.get("hp")));
 						
 						broadcast(clientData);
 					}

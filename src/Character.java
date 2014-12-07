@@ -19,6 +19,8 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	private int attackRange;
 	private int walkRange;
 	private int skillRange;
+	private boolean onDefense;
+	
 	public int getSkillRange() {
 		return skillRange;
 	}
@@ -139,9 +141,13 @@ public class Character extends JButton implements Constants, ActionListener, Key
 					case ATTACK:
 						Character ch = (Character) e.getSource();
 
-						if(bf.getActiveCharacter().getOwner() != ch.getOwner()) {
+						if(bf.getActiveCharacter().getOwner() != ch.getOwner() && ch.getOwner() != null) {
 							System.out.println(ch.getHp());
 							bf.getActiveCharacter().attack(ch);
+							
+							// Update the state of enemy player
+							String message = "ATTACK|username=" + ch.getOwner().getUsername() + "|characterIndex=" + ch.getCharacterIndex() + "|hp=" + ch.getHp(); 
+							GameElement.gameClient.sendToServer(message);
 							System.out.println(ch.getHp());
 						}
 						bf.removeHighlights();
@@ -166,7 +172,13 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	}
 	
 	public void attack(Character character) {
-		character.setHp(character.getHp() - attack);
+		float damage = attack;
+		
+		if(character.isOnDefense()) {
+			damage -= character.getDefense();
+		}
+		
+		character.setHp(character.getHp() - damage);
 		
 		if(isDead(character)) {
 			character = new Character();
@@ -228,11 +240,12 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, attackRange);
 			GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setState(ATTACK);
 		}else if(e.getKeyCode() == KeyEvent.VK_D) {
-			
+			GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setState(END_TURN);
+			GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setOnDefense(true);
 		}else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setState(ATTACK);
 		}else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			
+			GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setState(END_TURN);
 		}
 
 		this.removeKeyListener(this);
@@ -258,6 +271,14 @@ public class Character extends JButton implements Constants, ActionListener, Key
 
 	public void setCharacterIndex(int characterIndex) {
 		this.characterIndex = characterIndex;
+	}
+
+	public boolean isOnDefense() {
+		return onDefense;
+	}
+
+	public void setOnDefense(boolean onDefense) {
+		this.onDefense = onDefense;
 	}
 
 	
