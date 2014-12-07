@@ -18,7 +18,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	private int attackRange;
 	private int walkRange;
 	private Icon characterImage;
-	private boolean moved;
+	private int state;
 	
 	public Character() {
 		setHp(200);
@@ -27,7 +27,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		setWalkRange(0);
 		setBackground(new Color(Color.TRANSLUCENT));
 		setOpaque(false);
-		this.moved=false;
+		state=MOVE;
 		addActionListener(this);
 	}
 	
@@ -85,6 +85,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
 		if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter() == null){
 			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
 			GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
@@ -99,32 +100,32 @@ public class Character extends JButton implements Constants, ActionListener, Key
 				GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
 			}
 			else if(this.isOpaque()){
-				GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setXPosition(this.xPosition);
-				GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setYPosition(this.yPosition);
-				GameElement.gameClient.getBattleScreen().getBattlefield().refreshField();
-				GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setMoved(true);
-				GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setEnabled(false);
-				GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(null);
+				Battlefield bf = GameElement.gameClient.getBattleScreen().getBattlefield();
+				switch(bf.getActiveCharacter().getState()){
+				case MOVE:
+					bf.getActiveCharacter().setXPosition(this.xPosition);
+					bf.getActiveCharacter().setYPosition(this.yPosition);
+					bf.refreshField();
+					bf.getActiveCharacter().setState(ACTION);
+					bf.setActiveCharacter(null);
+					break;
+				case ACTION:
+					bf.getActiveCharacter().addKeyListener(bf.getActiveCharacter());
+					bf.getActiveCharacter().setState(END_TURN);
+					bf.setActiveCharacter(null);
+					break;
+				}
 			}
 		}
 	}
 	
-	@Override
-	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+
+	public int getState() {
+		return state;
 	}
 
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void setState(int state) {
+		this.state = state;
 	}
 
 	public int getWalkRange() {
@@ -143,12 +144,24 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		this.attackRange = attackRange;
 	}
 
-	public boolean isMoved() {
-		return moved;
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void setMoved(boolean moved) {
-		this.moved = moved;
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+		this.removeKeyListener(this);
 	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

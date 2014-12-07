@@ -44,4 +44,10 @@ public interface Constants {
 	public static final String PRIEST_IMAGE = "priest.png";
 	public static final String WIZARD_IMAGE = "wizard.png";
 	public static final String HUNTER_IMAGE = "hunter.png";
+	
+	//Character States
+	public static final int MOVE = 0;
+	public static final int ACTION = 1;
+	public static final int END_TURN = 2;
+	
 }

@@ -44,12 +44,6 @@ public class Battlefield extends JPanel implements Constants {
 			for(int j = 0; j < MAXIMUM_CHARACTER_COUNT; j++){
 				Character temp = p.getCharacters()[j];
 				temp.setPreferredSize(new Dimension(width/16,height/16));
-				if(!GameElement.gameClient.getPlayer().getUsername().equals(playerName)){
-					temp.setEnabled(false);
-				}
-				if(temp.isMoved()){
-					temp.setEnabled(false);
-				}
 				blocks[temp.getXPosition()][temp.getYPosition()] = temp;
 			}
 		}
