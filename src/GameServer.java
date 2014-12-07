@@ -17,6 +17,8 @@ public class GameServer implements Runnable, Constants {
 	private int playerCount = 0;
 	private int readyPlayers=0;
 	private HashMap<String, String> hashData;
+	private String[] playerNames;
+	private int turn=0;
 	
 	public GameServer() {
 		try {
@@ -98,10 +100,8 @@ public class GameServer implements Runnable, Constants {
 								player.getCharacters()[4].setXPosition(2);
 								player.getCharacters()[4].setYPosition(2);
 							}else if(playerCount == 1) {
-//								player.getCharacters()[0].setXPosition(13);
-//								player.getCharacters()[0].setYPosition(13);
-								player.getCharacters()[0].setXPosition(1);
-								player.getCharacters()[0].setYPosition(3);
+								player.getCharacters()[0].setXPosition(13);
+								player.getCharacters()[0].setYPosition(13);
 								
 								player.getCharacters()[1].setXPosition(15);
 								player.getCharacters()[1].setYPosition(13);
@@ -166,10 +166,13 @@ public class GameServer implements Runnable, Constants {
 						readyPlayers++;
 						if(readyPlayers==playerCount){
 							String playerName;
-							
+							this.playerNames = new String[playerCount];
+							int k=0;
 							for(Iterator<?> i = gameState.getPlayers().keySet().iterator(); i.hasNext();) {
 								String message = "INITIALIZE_PLAYERS|";
 								playerName = (String)i.next();
+								playerNames[k]=playerName;
+								k++;
 								Player p = (Player)gameState.getPlayers().get(playerName);
 								message += "username=" + playerName;
 								
@@ -182,7 +185,16 @@ public class GameServer implements Runnable, Constants {
 							}
 							
 							broadcast("START_BATTLE|");
+							broadcast("TURN|username="+playerNames[turn]);
 						}
+					}else if(clientData.startsWith("END_TURN")){
+						turn++;
+						if(turn==playerCount){
+							turn=0;
+							broadcast("RESET");
+						}
+						
+						broadcast("TURN|username="+playerNames[turn]);
 					}else if(clientData.startsWith("MOVE")){
 						hashData = GameUtility.parser(clientData);
 						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setXPosition(Integer.parseInt(hashData.get("xPosition")));
@@ -191,7 +203,7 @@ public class GameServer implements Runnable, Constants {
 						broadcast(clientData);
 					}else if(clientData.startsWith("ATTACK")){
 						hashData = GameUtility.parser(clientData);
-						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Integer.parseInt(hashData.get("hp")));
+						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Float.parseFloat(hashData.get("hp")));
 						
 						broadcast(clientData);
 					}else if(clientData.startsWith("DEFEND")){

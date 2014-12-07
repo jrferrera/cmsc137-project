@@ -9,7 +9,7 @@ public class Player implements Constants {
 	private InetAddress address;
 	private ChatBox chatBox;
 	private Character[] characters;
-	
+	public int movedCharacters=0;
 	private int enemyCharactersDefeated;
 	private int ownCharacterDeathCount;
 	
@@ -121,4 +121,5 @@ public class Player implements Constants {
 	public void setEnemyCharactersDefeated(int enemyCharactersDefeated) {
 		this.enemyCharactersDefeated = enemyCharactersDefeated;
 	}
+	
 }

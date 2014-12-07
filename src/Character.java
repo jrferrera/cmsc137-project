@@ -101,6 +101,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	public void actionPerformed(ActionEvent e) {
 		Battlefield bf=GameElement.gameClient.getBattleScreen().getBattlefield();
 		// Instantiate active character
+		if(GameElement.gameClient.getPlayer().getUsername().equals(GameElement.gameClient.getPlayerTurn())){
 		if(bf.getActiveCharacter() == null){
 			if(this.owner!=null){
 				if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
@@ -154,13 +155,18 @@ public class Character extends JButton implements Constants, ActionListener, Key
 						bf.removeHighlights();
 						bf.getActiveCharacter().setState(END_TURN);
 						bf.setActiveCharacter(null);
+						GameElement.gameClient.getPlayer().movedCharacters++;
 						break;
 					case END_TURN:
 						bf.setActiveCharacter(null);
 						break;
 			}
+			if(GameElement.gameClient.getPlayer().movedCharacters==MAXIMUM_CHARACTER_COUNT){
+				String message = "END_TURN";
+				GameElement.gameClient.sendToServer(message);
+			}
 		}
-		
+		}
 		
 	}
 	
@@ -246,15 +252,20 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			
 			String message = "DEFEND|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|isOnDefend=" + bf.getActiveCharacter().isOnDefend(); 
 			GameElement.gameClient.sendToServer(message);
-			
+			GameElement.gameClient.getPlayer().movedCharacters++;
 			bf.getActiveCharacter().setState(END_TURN);
 			bf.getActiveCharacter().setOnDefend(true);
-		}else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+		}else if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			bf.getActiveCharacter().setState(ATTACK);
-		}else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+		}else if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+			GameElement.gameClient.getPlayer().movedCharacters++;
 			bf.getActiveCharacter().setState(END_TURN);
 		}
-
+		
+		if(GameElement.gameClient.getPlayer().movedCharacters==MAXIMUM_CHARACTER_COUNT){
+			String message = "END_TURN";
+			GameElement.gameClient.sendToServer(message);
+		}
 		this.removeKeyListener(this);
 	}
 

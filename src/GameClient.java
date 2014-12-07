@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -5,6 +6,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -15,7 +17,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 	private Thread gameThread;
 	private DatagramSocket clientSocket;
 	private Player player;
-	
+	private String playerTurn;
 	public Player getPlayer() {
 		return player;
 	}
@@ -143,7 +145,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				battleScreen.getBattlefield().refreshField();
 			}else if(connected && serverData.startsWith("ATTACK")){
 				hashData = GameUtility.parser(serverData);
-				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Integer.parseInt(hashData.get("hp")));
+				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Float.parseFloat(hashData.get("hp")));
 				
 				battleScreen.getBattlefield().refreshField();
 			}else if(connected && serverData.startsWith("ATTACK")){
@@ -151,6 +153,22 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setOnDefend(Boolean.parseBoolean(hashData.get("isOnDefend")));
 				
 				battleScreen.getBattlefield().refreshField();
+			}else if(connected && serverData.startsWith("TURN")){
+				hashData = GameUtility.parser(serverData);
+				this.setPlayerTurn(hashData.get("username"));
+				this.battleScreen.getGameStatistics().getPlayerTurn().setText("Player Turn:"+hashData.get("username"));
+			}else if(connected && serverData.startsWith("RESET")){
+				String playerName;
+				for(Iterator<?> i = gameState.getPlayers().keySet().iterator(); i.hasNext();) {
+					playerName = (String)i.next();
+					Player p = (Player)GameClient.gameState.getPlayers().get(playerName);
+					p.movedCharacters=0;
+					for(int j = 0; j < MAXIMUM_CHARACTER_COUNT; j++){
+						Character temp = p.getCharacters()[j];
+						temp.setOnDefend(false);
+						temp.setState(MOVE);
+					}
+				}
 			}else if(connected) {
 				System.out.println("Connected");
 			}
@@ -167,6 +185,14 @@ public class GameClient extends JFrame implements Constants, Runnable {
 	
 	public static void main(String args[]) {
 		GameElement.gameClient = new GameClient();
+	}
+
+	public String getPlayerTurn() {
+		return playerTurn;
+	}
+
+	public void setPlayerTurn(String playerTurn) {
+		this.playerTurn = playerTurn;
 	}
 }
 

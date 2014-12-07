@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -12,7 +13,15 @@ public class BattleScreen extends JPanel implements Constants {
 	private Battlefield battlefield;
 	private GameStatistics gameStatistics;
 	private GameMenu gameMenu;
-	
+
+	public GameStatistics getGameStatistics() {
+		return gameStatistics;
+	}
+
+	public void setGameStatistics(GameStatistics gameStatistics) {
+		this.gameStatistics = gameStatistics;
+	}
+
 	public BattleScreen(Player player) {
 		this.player = player;
 		gameMenu = new GameMenu();
