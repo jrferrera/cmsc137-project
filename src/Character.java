@@ -97,43 +97,40 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	public void actionPerformed(ActionEvent e) {
 		Battlefield bf=GameElement.gameClient.getBattleScreen().getBattlefield();
 		// Instantiate active character
-		if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter() == null && this.getState()!=ACTION){
+		if(bf.getActiveCharacter() == null){
 			if(this.owner!=null){
 				if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
-					GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
-					GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
-				}
-			}
-		}
-		// If selected block is empty
-		else if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().getClass()==Character.class && this.getState()!=ACTION){
-			GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
-			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
-		}
-		else{
-			// Avoid overlapping characters
-			if(this.getClass() != Character.class && this.getState()!=ACTION){
-				if(this.owner!=null){
-					if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
-						GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
-						GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
+					if(this.getState()==MOVE){
+					bf.highlightField(xPosition, yPosition, walkRange);
+					bf.setActiveCharacter(this);
 					}
 				}
 			}
-			// Action on selected character
-			else if(this.isOpaque()){
-				Battlefield bf = GameElement.gameClient.getBattleScreen().getBattlefield();
-				switch(bf.getActiveCharacter().getState()){
-					case MOVE:
+		}
+		// Action on selected character
+		else if(this.isOpaque() && this.owner==null){
+				if(bf.getActiveCharacter().getState()==MOVE){
+						bf.getActiveCharacter().requestFocus();
 						bf.getActiveCharacter().setXPosition(this.xPosition);
 						bf.getActiveCharacter().setYPosition(this.yPosition);
-						bf.refreshField();
 						bf.getActiveCharacter().addKeyListener(bf.getActiveCharacter());
 						bf.getActiveCharacter().setState(ACTION);
-						break;
-					case ACTION:
-						
-						break;
+						bf.refreshField();
+				}
+		}
+		else if(this==bf.getActiveCharacter()){
+				if(bf.getActiveCharacter().getState()==MOVE){
+						bf.getActiveCharacter().requestFocus();
+						bf.getActiveCharacter().setXPosition(this.xPosition);
+						bf.getActiveCharacter().setYPosition(this.yPosition);
+						bf.getActiveCharacter().addKeyListener(bf.getActiveCharacter());
+						bf.getActiveCharacter().setState(ACTION);
+						bf.refreshField();
+				}
+		}
+		else if(this.owner!=null){
+			bf.getActiveCharacter().requestFocus();
+			switch(bf.getActiveCharacter().getState()){
 					case ATTACK:
 						Character ch = (Character) e.getSource();
 
@@ -142,14 +139,15 @@ public class Character extends JButton implements Constants, ActionListener, Key
 							bf.getActiveCharacter().attack(ch);
 							System.out.println(ch.getHp());
 						}
-						
+						bf.getActiveCharacter().setState(END_TURN);
+						bf.setActiveCharacter(null);
 						break;
 					case END_TURN:
 						bf.setActiveCharacter(null);
 						break;
-				}
 			}
 		}
+		
 		
 	}
 	
@@ -227,7 +225,11 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			
 		}else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().setState(ATTACK);
+		}else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			
 		}
+
+		this.removeKeyListener(this);
 	}
 
 	@Override
