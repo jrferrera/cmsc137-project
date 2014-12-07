@@ -9,6 +9,7 @@ import javax.swing.JButton;
 
 
 public class Character extends JButton implements Constants, ActionListener, KeyListener {
+	private int characterIndex;
 	private float hp;
 	private float mp;
 	private float attack;
@@ -113,9 +114,13 @@ public class Character extends JButton implements Constants, ActionListener, Key
 						bf.getActiveCharacter().requestFocus();
 						bf.getActiveCharacter().setXPosition(this.xPosition);
 						bf.getActiveCharacter().setYPosition(this.yPosition);
+						
 						bf.getActiveCharacter().addKeyListener(bf.getActiveCharacter());
 						bf.getActiveCharacter().setState(ACTION);
 						bf.refreshField();
+						
+						String message = "MOVE|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|xPosition=" + bf.getActiveCharacter().getXPosition() + "|yPosition=" + bf.getActiveCharacter().getYPosition(); 
+						GameElement.gameClient.sendToServer(message);
 				}
 		}
 		else if(this==bf.getActiveCharacter()){
@@ -245,6 +250,14 @@ public class Character extends JButton implements Constants, ActionListener, Key
 
 	public void setOwner(Player owner) {
 		this.owner = owner;
+	}
+
+	public int getCharacterIndex() {
+		return characterIndex;
+	}
+
+	public void setCharacterIndex(int characterIndex) {
+		this.characterIndex = characterIndex;
 	}
 
 	

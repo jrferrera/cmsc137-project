@@ -77,6 +77,7 @@ public class Player implements Constants {
 			this.characters[index] = new Wizard();
 		}
 		this.characters[index].setOwner(this);
+		this.characters[index].setCharacterIndex(index);
 	}
 	
 	public String toString() {
