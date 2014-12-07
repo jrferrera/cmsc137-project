@@ -95,6 +95,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		Battlefield bf=GameElement.gameClient.getBattleScreen().getBattlefield();
 		// Instantiate active character
 		if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter() == null && this.getState()!=ACTION){
 			if(this.owner!=null){
