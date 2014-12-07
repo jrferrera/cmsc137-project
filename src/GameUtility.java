@@ -17,6 +17,10 @@ public class GameUtility implements Constants{
 		}
 	}
 	
+	public static double getDistance(int xOrigin, int yOrigin, int xDestination,int yDestination){
+		return Math.sqrt(Math.pow(xOrigin-xDestination, 2)+Math.pow(yOrigin-yDestination, 2));
+	}
+	
 	public static HashMap<String, String> parser(String str){
 		StringTokenizer st = new StringTokenizer(str, "|");
 		HashMap<String, String> hm = new HashMap<String, String>();

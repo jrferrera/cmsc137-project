@@ -94,7 +94,7 @@ public class Battlefield extends JPanel implements Constants {
 	
 	public void highlightBlock(int x, int y) {
 		try {
-			blocks[x][y].setBackground(new Color(0,150,150,40));
+			blocks[x][y].setBackground(Color.CYAN);
 			blocks[x][y].setOpaque(true);
 		} catch(Exception e) {
 		}
@@ -104,7 +104,9 @@ public class Battlefield extends JPanel implements Constants {
 		removeHighlights();
 		for(int i = xOrigin-range; i < xOrigin+range+1; i ++) {
 			for(int j = yOrigin-range; j < yOrigin+range+1; j++) {
+				if(GameUtility.getDistance(xOrigin, yOrigin, i, j)<=range){
 				highlightBlock(i,j);
+				}
 			}
 		}
 	}
