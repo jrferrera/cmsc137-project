@@ -86,6 +86,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		// Instantiate active character selected character
 		if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter() == null && this.getState()!=ACTION){
 			if(this.owner!=null){
 				if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
@@ -94,11 +95,13 @@ public class Character extends JButton implements Constants, ActionListener, Key
 				}
 			}
 		}
+		// If selected block is empty
 		else if(GameElement.gameClient.getBattleScreen().getBattlefield().getActiveCharacter().getClass()==Character.class && this.getState()!=ACTION){
 			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
 			GameElement.gameClient.getBattleScreen().getBattlefield().setActiveCharacter(this);
 		}
 		else{
+			// Avoid overlapping characters
 			if(this.getClass() != Character.class && this.getState()!=ACTION){
 				if(this.owner!=null){
 					if(this.owner.getUsername().equals(GameElement.gameClient.getPlayer().getUsername())){
@@ -107,6 +110,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 					}
 				}
 			}
+			// Action on selected character
 			else if(this.isOpaque()){
 				Battlefield bf = GameElement.gameClient.getBattleScreen().getBattlefield();
 				switch(bf.getActiveCharacter().getState()){
@@ -163,7 +167,11 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
-		this.removeKeyListener(this);
+		if(e.getKeyCode() == KeyEvent.VK_A) {
+			GameElement.gameClient.getBattleScreen().getBattlefield().highlightField(xPosition, yPosition, walkRange);
+		}else if(e.getKeyCode() == KeyEvent.VK_D) {
+			
+		}
 	}
 
 	@Override
