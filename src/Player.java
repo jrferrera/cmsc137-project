@@ -10,6 +10,7 @@ public class Player implements Constants {
 	private ChatBox chatBox;
 	private Character[] characters;
 	public int movedCharacters=0;
+	public int aliveCharacters=MAXIMUM_CHARACTER_COUNT;
 	private int enemyCharactersDefeated;
 	private int ownCharacterDeathCount;
 	

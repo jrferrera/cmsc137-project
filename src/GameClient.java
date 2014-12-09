@@ -148,7 +148,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Float.parseFloat(hashData.get("hp")));
 				
 				battleScreen.getBattlefield().refreshField();
-			}else if(connected && serverData.startsWith("ATTACK")){
+			}else if(connected && serverData.startsWith("DEFEND")){
 				hashData = GameUtility.parser(serverData);
 				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setOnDefend(Boolean.parseBoolean(hashData.get("isOnDefend")));
 				
@@ -169,6 +169,10 @@ public class GameClient extends JFrame implements Constants, Runnable {
 						temp.setState(MOVE);
 					}
 				}
+			}else if(connected && serverData.startsWith("WINNER")){
+				hashData = GameUtility.parser(serverData);
+				JOptionPane op=new JOptionPane();
+				op.showMessageDialog(battleScreen,"Player "+hashData.get("username")+" wins!" );
 			}else if(connected) {
 				System.out.println("Connected");
 			}

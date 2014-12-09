@@ -204,8 +204,15 @@ public class GameServer implements Runnable, Constants {
 					}else if(clientData.startsWith("ATTACK")){
 						hashData = GameUtility.parser(clientData);
 						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Float.parseFloat(hashData.get("hp")));
+						if(gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].isDead(gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))])){
+							gameState.getPlayers().get(hashData.get("username")).aliveCharacters--;
+						}
 						
 						broadcast(clientData);
+						String winner=checkWinner();
+						if(!winner.equals("none")){
+							broadcast("WINNER|username="+winner);
+						}
 					}else if(clientData.startsWith("DEFEND")){
 						hashData = GameUtility.parser(clientData);
 						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setOnDefend(Boolean.parseBoolean(hashData.get("isOnDefend")));
@@ -213,6 +220,27 @@ public class GameServer implements Runnable, Constants {
 						broadcast(clientData);
 					}
 			}
+		}
+	}
+	
+	public String checkWinner(){
+		String playerName;
+		int playersRemaining=0;
+		String winner = "";
+		for(Iterator<?> i = gameState.getPlayers().keySet().iterator(); i.hasNext();) {
+			playerName = (String)i.next();
+			Player p = (Player)gameState.getPlayers().get(playerName);
+			
+			if(p.aliveCharacters>0){
+				playersRemaining++;
+				winner=p.getUsername();
+			}
+		}
+		if(playersRemaining==1){
+			return winner;
+		}
+		else{
+			return "none";
 		}
 	}
 

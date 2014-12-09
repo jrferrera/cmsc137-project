@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 
 
 public class Battlefield extends JPanel implements Constants {
-	private int height;
-	private int width;
+	static int height;
+	static int width;
 	private Character[][] blocks;
 	private Character activeCharacter;
 	
@@ -32,7 +32,6 @@ public class Battlefield extends JPanel implements Constants {
 				blocks[i][j] = new Character();
 				blocks[i][j].setXPosition(i);
 				blocks[i][j].setYPosition(j);
-				blocks[i][j].setPreferredSize(new Dimension(width/16, height/16));
 			}
 		}
 		
@@ -43,12 +42,18 @@ public class Battlefield extends JPanel implements Constants {
 			
 			for(int j = 0; j < MAXIMUM_CHARACTER_COUNT; j++){
 				Character temp = p.getCharacters()[j];
-				temp.setPreferredSize(new Dimension(width/16,height/16));
 				if(!GameElement.gameClient.getPlayer().getUsername().equals(playerName)){
 					temp.setBackground(Color.RED);
 					temp.setOpaque(true);
 				}
-				blocks[temp.getXPosition()][temp.getYPosition()] = temp;
+				int x = temp.getXPosition();
+				int y = temp.getYPosition();
+				if(temp.isDead(temp)){
+					temp = new Character();
+					temp.setXPosition(x);
+					temp.setYPosition(y);
+				}
+				blocks[x][y] = temp;
 			}
 		}
 		
@@ -84,8 +89,10 @@ public class Battlefield extends JPanel implements Constants {
 	public void removeHighlights(){
 		for(int i = 0; i < 16; i++) {
 			for(int j = 0; j < 16; j++) {
+				if(blocks[i][j].getBackground()!=Color.RED){
 				blocks[i][j].setBackground(new Color(Color.TRANSLUCENT));
 				blocks[i][j].setOpaque(false);
+				}
 			}
 		}
 	}

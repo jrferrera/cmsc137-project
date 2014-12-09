@@ -36,6 +36,7 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 	
 	private JButton joinGameButton;
 	private JButton quitButton;
+	private JButton gameManualButton;
 	
 	public MainMenu(Player player) {
 		this.player = player;
@@ -64,10 +65,13 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 		quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
 		
+		gameManualButton = new JButton("Instructions");
+		gameManualButton.addActionListener(this);
+		
 		mainMenuPanel = new JPanel();
 		
-		mainMenuPanel.setMaximumSize(new Dimension(300, 300));
-		mainMenuPanel.setLayout(new GridLayout(17, 1));
+		mainMenuPanel.setPreferredSize(new Dimension(300, 450));
+		mainMenuPanel.setLayout(new GridLayout(18, 1));
 		mainMenuPanel.setBackground(new Color(0f, 0f, 0f, 0f));
 		
 		mainMenuPanel.add(characterOneLabel);
@@ -90,16 +94,12 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 		mainMenuPanel.add(usernameLabel);
 		mainMenuPanel.add(usernameField);
 		mainMenuPanel.add(joinGameButton);
+		mainMenuPanel.add(gameManualButton);
 		mainMenuPanel.add(quitButton);
 		
-		
-		setLayout(new BorderLayout(100, 100));
 		setMaximumSize(new Dimension(600, 600));
-		add(new JPanel(), BorderLayout.NORTH);
-		add(new JPanel(), BorderLayout.EAST);
-		add(new JPanel(), BorderLayout.SOUTH);
-		add(new JPanel(), BorderLayout.WEST);
-		add(mainMenuPanel, BorderLayout.CENTER);
+
+		add(mainMenuPanel);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -115,6 +115,7 @@ public class MainMenu extends JPanel implements Constants, ActionListener {
 									break;
 			case "Quit"			:	System.exit(0);
 									break;
+			case "Instructions"	:	GameElement.gameClient.changeScreen(new GameManual());
 		}
 	}
 }
