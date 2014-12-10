@@ -52,13 +52,17 @@ public class Battlefield extends JPanel implements Constants {
 				if(temp.isDead(temp)){
 					k++;
 					temp = new Character();
+					temp.setBackground(new Color(Color.TRANSLUCENT));
+					temp.setOpaque(false);
 					temp.setXPosition(x);
 					temp.setYPosition(y);
-					p.getCharacters()[j]=temp;
 				}
 				blocks[x][y] = temp;
 			}
 			p.aliveCharacters-=k;
+			if(p.getUsername()==GameElement.gameClient.getPlayer().getUsername()){
+				GameElement.gameClient.getPlayer().aliveCharacters=p.aliveCharacters;
+			}
 		}
 		
 		

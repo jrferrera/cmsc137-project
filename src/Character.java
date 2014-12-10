@@ -202,8 +202,6 @@ public class Character extends JButton implements Constants, ActionListener, Key
 						GameElement.gameClient.getPlayer().movedCharacters++;
 						this.removeKeyListener(this);
 						break;
-					case ACTION:
-						break;
 					case USE_SKILL:						
 						System.out.println(ch.getHp());
 						bf.getActiveCharacter().useSkill(bf.getActiveCharacter().getSkills().get(bf.getActiveCharacter().getSkillToUse()), ch);
@@ -216,6 +214,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 						bf.getActiveCharacter().setState(END_TURN);
 						bf.setActiveCharacter(null);
 						GameElement.gameClient.getPlayer().movedCharacters++;
+						this.removeKeyListener(this);
 						break;
 					case END_TURN:
 						bf.setActiveCharacter(null);
@@ -401,10 +400,6 @@ public class Character extends JButton implements Constants, ActionListener, Key
 				
 				character.setHp(character.getHp() - damage);
 				
-				if(isDead(character)) {
-					character = new Character();
-					GameElement.gameClient.getBattleScreen().getBattlefield().revalidate();
-				}
 			}else if(skill.isSupport() && !isEnemyCharacter(character.getOwner())) {
 				if(character.getHp() + damage > character.getMaxHp()) {
 					character.setHp(character.getMaxHp());
