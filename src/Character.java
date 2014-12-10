@@ -57,7 +57,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	private Player owner;
 	
 	public Character() {
-		setHp(200);
+		setHp(10);
 		setMaxHp(200);
 		setMp(100);
 		setMaxMp(100);
