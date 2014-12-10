@@ -240,7 +240,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	public void attack(Character character) {
 		float damage = attack;
 		
-		if(character.isOnDefend() && isWithinAttackRange(character)) {
+		if(character.isOnDefend()) {
 			damage -= character.getDefense();
 		}
 		

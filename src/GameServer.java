@@ -212,6 +212,7 @@ public class GameServer implements Runnable, Constants {
 					}else if(clientData.startsWith("ATTACK")){
 						hashData = GameUtility.parser(clientData);
 						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Float.parseFloat(hashData.get("hp")));
+						
 						if(gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].getHp()<=0.0){
 							broadcast("KILL|username="+hashData.get("username")+"|characterIndex="+hashData.get("characterIndex"));
 							gameState.getPlayers().get(hashData.get("username")).aliveCharacters--;
