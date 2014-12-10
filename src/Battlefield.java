@@ -97,6 +97,9 @@ public class Battlefield extends JPanel implements Constants {
 				blocks[i][j].setBackground(new Color(Color.TRANSLUCENT));
 				blocks[i][j].setOpaque(false);
 				}
+				if(blocks[i][j].getOwner() != GameElement.gameClient.getPlayer()){
+					blocks[i][j].setBackground(Color.RED);
+				}
 			}
 		}
 	}
