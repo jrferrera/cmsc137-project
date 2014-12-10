@@ -42,7 +42,7 @@ public class Battlefield extends JPanel implements Constants {
 			
 			for(int j = 0; j < MAXIMUM_CHARACTER_COUNT; j++){
 				Character temp = p.getCharacters()[j];
-				if(!GameElement.gameClient.getPlayer().getUsername().equals(playerName)){
+				if(!GameElement.gameClient.getPlayer().getUsername().equals(playerName) && temp.getOwner()!=null){
 					temp.setBackground(Color.RED);
 					temp.setOpaque(true);
 				}

@@ -216,6 +216,8 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				if(gameState.getPlayers().get(hashData.get("username")).equals(this.player)){
 					this.player.aliveCharacters--;
 				}
+				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))]=temp;
+				
 				this.battleScreen.getBattlefield().refreshField();
 			}else if(connected) {
 				System.out.println("Connected");
