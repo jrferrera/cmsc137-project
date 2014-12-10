@@ -187,7 +187,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			Character ch = (Character) e.getSource();
 			switch(bf.getActiveCharacter().getState()){
 					case ATTACK:
-//						if(isEnemyCharacter(ch)) {
+						if(isEnemyCharacter(bf.getActiveCharacter().getOwner(),ch.getOwner())) {
 							System.out.println(ch.getHp());
 							bf.getActiveCharacter().attack(ch);
 							
@@ -195,7 +195,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 							String message = "ATTACK|username=" + ch.getOwner().getUsername() + "|characterIndex=" + ch.getCharacterIndex() + "|hp=" + ch.getHp(); 
 							GameElement.gameClient.sendToServer(message);
 							System.out.println(ch.getHp());
-//						}
+						}
 						bf.removeHighlights();
 						bf.getActiveCharacter().setState(END_TURN);
 						bf.setActiveCharacter(null);
@@ -205,7 +205,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 					case ACTION:
 						break;
 					case USE_SKILL:
-						if(isEnemyCharacter(ch)) {
+						if(isEnemyCharacter(bf.getActiveCharacter().getOwner(),ch.getOwner())) {
 							System.out.println(ch.getHp());
 							bf.getActiveCharacter().useSkill(bf.getActiveCharacter().getSkills().get(bf.getActiveCharacter().getSkillToUse()), ch);
 							
@@ -275,8 +275,8 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		}
 	}
 	
-	public boolean isEnemyCharacter(Character character) {
-		if(owner != character.getOwner()) {
+	public boolean isEnemyCharacter(Player player1, Player player2) {
+		if(player1 != player2 && player2 != null) {
 			return true;
 		}else {
 			return false;
