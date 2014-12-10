@@ -212,7 +212,6 @@ public class Character extends JButton implements Constants, ActionListener, Key
 							String message1 = "UPDATE_PLAYERS" + "|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|mp=" + bf.getActiveCharacter().getMp() + "|enemyUsername=" + ch.getOwner().getUsername() + "|enemyCharacterIndex=" + ch.getCharacterIndex() + "|enemyHp=" + ch.getHp();  
 							GameElement.gameClient.sendToServer(message1);
 							System.out.println(ch.getHp());
-							bf.getActiveCharacter().setSkillToUse(-1);
 						}
 						bf.removeHighlights();
 						bf.getActiveCharacter().setState(END_TURN);
@@ -337,6 +336,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			GameElement.gameClient.getPlayer().movedCharacters++;
 			this.removeKeyListener(this);
 		}else if(bf.getActiveCharacter().hasSkill(e.getKeyCode())) {
+			bf.highlightField(xPosition, yPosition, bf.getActiveCharacter().getSkills().get(e.getKeyCode()).getRange());
 			bf.getActiveCharacter().setState(USE_SKILL);
 			bf.getActiveCharacter().setSkillToUse(e.getKeyCode());
 		}
@@ -413,6 +413,8 @@ public class Character extends JButton implements Constants, ActionListener, Key
 					character.setHp(character.getHp() + damage);
 				}
 			}
+			
+			setSkillToUse(-1);
 		}
 	}
 }
