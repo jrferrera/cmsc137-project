@@ -201,6 +201,22 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				gameState.getPlayers().get(hashData.get("enemyUsername")).getCharacters()[Integer.parseInt(hashData.get("enemyCharacterIndex"))].setHp(Float.parseFloat(hashData.get("enemyHp")));
 				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setMp(Float.parseFloat(hashData.get("mp")));
 				
+			}else if(connected && serverData.startsWith("KILL")){
+				hashData = GameUtility.parser(serverData);
+				Character temp=gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))];
+				
+				int x = temp.getX();
+				int y = temp.getY();
+				temp=new Character();
+				temp.setBackground(new Color(Color.TRANSLUCENT));
+				temp.setXPosition(x);
+				temp.setYPosition(y);
+				
+				gameState.getPlayers().get(hashData.get("username")).aliveCharacters--;
+				if(gameState.getPlayers().get(hashData.get("username")).equals(this.player)){
+					this.player.aliveCharacters--;
+				}
+				this.battleScreen.getBattlefield().refreshField();
 			}else if(connected) {
 				System.out.println("Connected");
 			}

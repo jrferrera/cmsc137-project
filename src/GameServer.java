@@ -213,6 +213,7 @@ public class GameServer implements Runnable, Constants {
 						hashData = GameUtility.parser(clientData);
 						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Float.parseFloat(hashData.get("hp")));
 						if(gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].isDead(gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))])){
+							broadcast("KILL|username="+hashData.get("username")+"|characterIndex="+hashData.get("characterIndex"));
 							gameState.getPlayers().get(hashData.get("username")).aliveCharacters--;
 						}
 						
@@ -229,17 +230,19 @@ public class GameServer implements Runnable, Constants {
 					}else if(clientData.startsWith("UPDATE_PLAYERS")){
 						hashData = GameUtility.parser(clientData);
 						
-						// Update skill user
-						player = gameState.getPlayers().get(hashData.get("username"));
-						player.getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setMp(Float.parseFloat(hashData.get("mp")));
+						gameState.getPlayers().get(hashData.get("enemyUsername")).getCharacters()[Integer.parseInt(hashData.get("enemyCharacterIndex"))].setHp(Float.parseFloat(hashData.get("enemyHp")));
+						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setMp(Float.parseFloat(hashData.get("mp")));
 						
-						gameState.updatePlayer(player.getUsername(), player);
+						if(gameState.getPlayers().get(hashData.get("enemyUsername")).getCharacters()[Integer.parseInt(hashData.get("enemyCharacterIndex"))].isDead(gameState.getPlayers().get(hashData.get("enemyUsername")).getCharacters()[Integer.parseInt(hashData.get("enemyCharacterIndex"))])){
+							gameState.getPlayers().get(hashData.get("enemyUsername")).aliveCharacters--;
+							broadcast("KILL|username="+hashData.get("enemyUsername")+"|characterIndex="+hashData.get("enemyCharacterIndex"));
+						}
 						
-						// Update target player
-						player = gameState.getPlayers().get(hashData.get("enemyUsername"));
-						player.getCharacters()[Integer.parseInt(hashData.get("enemyCharacterIndex"))].setMp(Float.parseFloat(hashData.get("enemyHp")));
-						
-						gameState.updatePlayer(player.getUsername(), player);
+						broadcast(clientData);
+						String winner=checkWinner();
+						if(!winner.equals("none")){
+							broadcast("WINNER|username="+winner);
+						}
 						
 						broadcast(clientData);
 					}

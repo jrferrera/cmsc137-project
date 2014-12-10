@@ -40,30 +40,18 @@ public class Battlefield extends JPanel implements Constants {
 			playerName = (String)i.next();
 			Player p = (Player)GameClient.gameState.getPlayers().get(playerName);
 			
-			int k=0;
 			for(int j = 0; j < MAXIMUM_CHARACTER_COUNT; j++){
 				Character temp = p.getCharacters()[j];
 				if(!GameElement.gameClient.getPlayer().getUsername().equals(playerName)){
 					temp.setBackground(Color.RED);
 					temp.setOpaque(true);
 				}
-				int x = temp.getXPosition();
-				int y = temp.getYPosition();
-				if(temp.isDead(temp)){
-					k++;
-					temp = new Character();
-					temp.setBackground(new Color(Color.TRANSLUCENT));
-					temp.setOpaque(false);
-					temp.setXPosition(x);
-					temp.setYPosition(y);
-				}
-				blocks[x][y] = temp;
+				
+				blocks[temp.getX()][temp.getY()] = temp;
 			}
-			p.aliveCharacters-=k;
 			
 		}
 		
-		GameElement.gameClient.getPlayer().aliveCharacters = GameClient.gameState.getPlayers().get(GameElement.gameClient.getPlayer().getUsername()).aliveCharacters;
 		for(int i = 0; i < 16; i++) {
 			for(int j = 0; j < 16; j++) {
 				add(blocks[i][j]);
