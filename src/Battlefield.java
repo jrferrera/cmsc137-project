@@ -60,12 +60,10 @@ public class Battlefield extends JPanel implements Constants {
 				blocks[x][y] = temp;
 			}
 			p.aliveCharacters-=k;
-			if(p.getUsername()==GameElement.gameClient.getPlayer().getUsername()){
-				GameElement.gameClient.getPlayer().aliveCharacters=p.aliveCharacters;
-			}
+			
 		}
 		
-		
+		GameElement.gameClient.getPlayer().aliveCharacters = GameClient.gameState.getPlayers().get(GameElement.gameClient.getPlayer().getUsername()).aliveCharacters;
 		for(int i = 0; i < 16; i++) {
 			for(int j = 0; j < 16; j++) {
 				add(blocks[i][j]);
