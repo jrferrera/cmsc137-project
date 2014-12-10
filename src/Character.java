@@ -187,7 +187,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			Character ch = (Character) e.getSource();
 			switch(bf.getActiveCharacter().getState()){
 					case ATTACK:
-						if(isEnemyCharacter(bf.getActiveCharacter().getOwner(),ch.getOwner())) {
+						if(bf.getActiveCharacter().isEnemyCharacter(ch.getOwner())) {
 							System.out.println(ch.getHp());
 							bf.getActiveCharacter().attack(ch);
 							
@@ -204,15 +204,14 @@ public class Character extends JButton implements Constants, ActionListener, Key
 						break;
 					case ACTION:
 						break;
-					case USE_SKILL:
-						if(isEnemyCharacter(bf.getActiveCharacter().getOwner(),ch.getOwner())) {
-							System.out.println(ch.getHp());
-							bf.getActiveCharacter().useSkill(bf.getActiveCharacter().getSkills().get(bf.getActiveCharacter().getSkillToUse()), ch);
-							
-							String message1 = "UPDATE_PLAYERS" + "|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|mp=" + bf.getActiveCharacter().getMp() + "|enemyUsername=" + ch.getOwner().getUsername() + "|enemyCharacterIndex=" + ch.getCharacterIndex() + "|enemyHp=" + ch.getHp();  
-							GameElement.gameClient.sendToServer(message1);
-							System.out.println(ch.getHp());
-						}
+					case USE_SKILL:						
+						System.out.println(ch.getHp());
+						bf.getActiveCharacter().useSkill(bf.getActiveCharacter().getSkills().get(bf.getActiveCharacter().getSkillToUse()), ch);
+						
+						String message1 = "UPDATE_PLAYERS" + "|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|mp=" + bf.getActiveCharacter().getMp() + "|enemyUsername=" + ch.getOwner().getUsername() + "|enemyCharacterIndex=" + ch.getCharacterIndex() + "|enemyHp=" + ch.getHp();  
+						GameElement.gameClient.sendToServer(message1);
+						System.out.println(ch.getHp());
+						
 						bf.removeHighlights();
 						bf.getActiveCharacter().setState(END_TURN);
 						bf.setActiveCharacter(null);
@@ -274,8 +273,8 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		}
 	}
 	
-	public boolean isEnemyCharacter(Player player1, Player player2) {
-		if(player1 != player2 && player2 != null) {
+	public boolean isEnemyCharacter(Player player) {
+		if(owner != player && player != null) {
 			return true;
 		}else {
 			return false;
@@ -395,7 +394,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			
 			float damage = skill.getDamage();
 			
-			if(skill.isOffensive()) {
+			if(skill.isOffensive() && isEnemyCharacter(character.getOwner())) {
 				if(character.isOnDefend() && skill.isDefensible()) {
 					damage -= character.getDefense();
 				}
@@ -406,7 +405,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 					character = new Character();
 					GameElement.gameClient.getBattleScreen().getBattlefield().revalidate();
 				}
-			}else if(skill.isSupport()) {
+			}else if(skill.isSupport() && !isEnemyCharacter(character.getOwner())) {
 				if(character.getHp() + damage > character.getMaxHp()) {
 					character.setHp(character.getMaxHp());
 				}else {
