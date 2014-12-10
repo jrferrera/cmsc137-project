@@ -241,7 +241,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	public void attack(Character character) {
 		float damage = attack;
 		
-		if(character.isOnDefend()) {
+		if(character.isOnDefend() && isWithinAttackRange(character)) {
 			damage -= character.getDefense();
 		}
 		
@@ -257,7 +257,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		}
 	}
 	
-	public boolean withinAttackRange(Character character) {
+	public boolean isWithinAttackRange(Character character) {
 		if(GameUtility.getDistance(xPosition, yPosition, character.getXPosition(), character.getYPosition()) <= attackRange) {
 			return true;
 		}else {
@@ -265,7 +265,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		}
 	}
 	
-	public boolean withinSkillRange(Skill skill, Character character) {
+	public boolean isWithinSkillRange(Skill skill, Character character) {
 		if(GameUtility.getDistance(xPosition, yPosition, character.getXPosition(), character.getYPosition()) <= skill.getRange()) {
 			return true;
 		}else {
@@ -389,7 +389,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	}
 
 	public void useSkill(Skill skill, Character character) {
-		if(mp >= skill.getMpCost()) {
+		if(mp >= skill.getMpCost() && isWithinSkillRange(skill, character)) {
 			setMp(mp - skill.getMpCost());
 			
 			float damage = skill.getDamage();
