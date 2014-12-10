@@ -47,7 +47,7 @@ public class Battlefield extends JPanel implements Constants {
 					temp.setOpaque(true);
 				}
 				
-				blocks[temp.getX()][temp.getY()] = temp;
+				blocks[temp.getXPosition()][temp.getYPosition()] = temp;
 			}
 			
 		}

@@ -205,8 +205,8 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				hashData = GameUtility.parser(serverData);
 				Character temp=gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))];
 				
-				int x = temp.getX();
-				int y = temp.getY();
+				int x = temp.getXPosition();
+				int y = temp.getYPosition();
 				temp=new Character();
 				temp.setBackground(new Color(Color.TRANSLUCENT));
 				temp.setXPosition(x);
