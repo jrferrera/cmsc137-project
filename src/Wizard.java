@@ -11,7 +11,7 @@ public class Wizard extends Character {
 		setAttack(10);
 		setDefense(7);
 		setAttackRange(1);
-		setWalkRange(1);
+		setWalkRange(4);
 		setIcon(new ImageIcon(CHARACTER_LOCATION + "/" + WIZARD_IMAGE));
 
 		initializeSkills();

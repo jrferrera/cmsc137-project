@@ -187,7 +187,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			Character ch = (Character) e.getSource();
 			switch(bf.getActiveCharacter().getState()){
 					case ATTACK:
-						if(isEnemyCharacter(ch)) {
+//						if(isEnemyCharacter(ch)) {
 							System.out.println(ch.getHp());
 							bf.getActiveCharacter().attack(ch);
 							
@@ -195,7 +195,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 							String message = "ATTACK|username=" + ch.getOwner().getUsername() + "|characterIndex=" + ch.getCharacterIndex() + "|hp=" + ch.getHp(); 
 							GameElement.gameClient.sendToServer(message);
 							System.out.println(ch.getHp());
-						}
+//						}
 						bf.removeHighlights();
 						bf.getActiveCharacter().setState(END_TURN);
 						bf.setActiveCharacter(null);
@@ -209,8 +209,8 @@ public class Character extends JButton implements Constants, ActionListener, Key
 							System.out.println(ch.getHp());
 							bf.getActiveCharacter().useSkill(bf.getActiveCharacter().getSkills().get(bf.getActiveCharacter().getSkillToUse()), ch);
 							
-							String message = "UPDATE_PLAYERS" + "|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|mp=" + bf.getActiveCharacter().getMp() + "|enemyUsername=" + ch.getOwner().getUsername() + "|enemyCharacterIndex=" + ch.getCharacterIndex() + "|enemyHp=" + ch.getHp();  
-							GameElement.gameClient.sendToServer(message);
+							String message1 = "UPDATE_PLAYERS" + "|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|mp=" + bf.getActiveCharacter().getMp() + "|enemyUsername=" + ch.getOwner().getUsername() + "|enemyCharacterIndex=" + ch.getCharacterIndex() + "|enemyHp=" + ch.getHp();  
+							GameElement.gameClient.sendToServer(message1);
 							System.out.println(ch.getHp());
 							bf.getActiveCharacter().setSkillToUse(-1);
 						}
@@ -328,10 +328,6 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			String message = "DEFEND|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|isOnDefend=" + bf.getActiveCharacter().isOnDefend(); 
 			GameElement.gameClient.sendToServer(message);
 			bf.setActiveCharacter(null);
-			GameElement.gameClient.getPlayer().movedCharacters++;
-			this.removeKeyListener(this);
-		}else if(e.getKeyCode() == KeyEvent.VK_ENTER){
-			bf.getActiveCharacter().setState(ATTACK);
 			GameElement.gameClient.getPlayer().movedCharacters++;
 			this.removeKeyListener(this);
 		}else if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
