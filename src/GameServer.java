@@ -78,7 +78,9 @@ public class GameServer implements Runnable, Constants {
 						try {
 							player = new Player(hashData.get("username"), packet.getPort(), packet.getAddress());
 							
-							
+							if(gameState.getPlayers().containsKey(hashData.get("username"))){
+								sendToClient(player, "CONNECTION_FAILED|message=Username already exists.");
+							}else{
 							for(int index = 0; index < MAXIMUM_CHARACTER_COUNT; index++) {
 								String characterType = hashData.get("character" + index);
 								player.addCharacter(characterType, index);
@@ -150,13 +152,19 @@ public class GameServer implements Runnable, Constants {
 							gameState.updatePlayer(player.getUsername(), player);
 							
 							playerCount++;
+							sendToClient(player, "CONNECTED|"+"playerCount="+playerCount+"|"+ player.toString());
+							
+							if(playerCount >= MINIMUM_PLAYER_COUNT && playerCount <= MAXIMUM_PLAYER_COUNT) {
+								broadcast("ENOUGH_PLAYERS");
+							}
+							String playerName;
+							for(Iterator<?> i = gameState.getPlayers().keySet().iterator(); i.hasNext();) {
+								playerName = (String)i.next();
+								broadcast("PLAYER_JOIN|username="+playerName);
+							}
+							}
 						}catch(Exception e) { }
 						
-						sendToClient(player, "CONNECTED|"+"playerCount="+playerCount+"|"+ player.toString());
-						
-						if(playerCount >= MINIMUM_PLAYER_COUNT && playerCount <= MAXIMUM_PLAYER_COUNT) {
-							broadcast("ENOUGH_PLAYERS");
-						}
 					}else if(clientData.startsWith("CHAT_ALL")) {
 						System.out.println("Message received");
 						

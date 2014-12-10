@@ -158,12 +158,13 @@ public class Character extends JButton implements Constants, ActionListener, Key
 						bf.getActiveCharacter().setState(END_TURN);
 						bf.setActiveCharacter(null);
 						GameElement.gameClient.getPlayer().movedCharacters++;
+						this.removeKeyListener(this);
 						break;
 					case END_TURN:
 						bf.setActiveCharacter(null);
 						break;
 			}
-			if(GameElement.gameClient.getPlayer().movedCharacters==GameElement.gameClient.getPlayer().aliveCharacters--){
+			if(GameElement.gameClient.getPlayer().movedCharacters==GameElement.gameClient.getPlayer().aliveCharacters){
 				String message = "END_TURN";
 				GameElement.gameClient.sendToServer(message);
 			}
@@ -189,9 +190,6 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		
 		character.setHp(character.getHp() - damage);
 		
-		if(isDead(character)) {
-			character.getOwner().aliveCharacters--;
-		}
 	}
 	
 	public boolean isWalkable(int x, int y) {
@@ -251,26 +249,32 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		// Defense
 		}else if(e.getKeyCode() == KeyEvent.VK_D) {
 			bf.removeHighlights();
-			String message = "DEFEND|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|isOnDefend=" + bf.getActiveCharacter().isOnDefend(); 
-			GameElement.gameClient.sendToServer(message);
 			bf.getActiveCharacter().setState(END_TURN);
 			bf.getActiveCharacter().setOnDefend(true);
+			String message = "DEFEND|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|isOnDefend=" + bf.getActiveCharacter().isOnDefend(); 
+			GameElement.gameClient.sendToServer(message);
+			bf.setActiveCharacter(null);
 			GameElement.gameClient.getPlayer().movedCharacters++;
+			this.removeKeyListener(this);
 		}else if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			bf.getActiveCharacter().setState(ATTACK);
 			GameElement.gameClient.getPlayer().movedCharacters++;
+			this.removeKeyListener(this);
 		}else if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
 			bf.removeHighlights();
 			bf.getActiveCharacter().setState(END_TURN);
+			bf.setActiveCharacter(null);
 			GameElement.gameClient.getPlayer().movedCharacters++;
+			this.removeKeyListener(this);
+		}else{
+			return;
 		}
 		
 		
-		if(GameElement.gameClient.getPlayer().movedCharacters==MAXIMUM_CHARACTER_COUNT){
+		if(GameElement.gameClient.getPlayer().movedCharacters==GameElement.gameClient.getPlayer().aliveCharacters){
 			String message = "END_TURN";
 			GameElement.gameClient.sendToServer(message);
 		}
-		this.removeKeyListener(this);
 	}
 
 	@Override

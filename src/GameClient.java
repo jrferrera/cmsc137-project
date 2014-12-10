@@ -5,6 +5,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -18,6 +19,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 	private DatagramSocket clientSocket;
 	private Player player;
 	private String playerTurn;
+	private ArrayList<String> playernames;
 	public Player getPlayer() {
 		return player;
 	}
@@ -61,6 +63,8 @@ public class GameClient extends JFrame implements Constants, Runnable {
 		gameState = new GameState();
 		gameThread = new Thread(this);
 		changeScreen(new MainMenu(player));
+		
+		playernames=new ArrayList<String>();
 		
 		gameThread.start();
 	}
@@ -114,7 +118,9 @@ public class GameClient extends JFrame implements Constants, Runnable {
 					e.printStackTrace();
 				}
 			}else if(!connected && serverData.startsWith("CONNECTION_FAILED")) {
-				JOptionPane.showMessageDialog(null, "Connection Failed", "Message", JOptionPane.ERROR_MESSAGE);
+				hashData = GameUtility.parser(serverData);
+				
+				JOptionPane.showMessageDialog(null, hashData.get("message"), "Connection Failed", JOptionPane.ERROR_MESSAGE);
 			}else if(connected && serverData.startsWith("CHAT_ALL")) {
 				hashData = GameUtility.parser(serverData);
 				
@@ -133,16 +139,27 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				}
 				
 				gameState.updatePlayer(p.getUsername(), p);
+			}else if(connected && serverData.startsWith("PLAYER_JOIN")){
+				hashData = GameUtility.parser(serverData);
+				if(!playernames.contains(hashData.get("username"))){
+				playernames.add(hashData.get("username"));
+				}
+				gp.getConnectedPlayers().setText("Connected players:\n");
+				for(int i=0;i<playernames.size();i++){
+					gp.getConnectedPlayers().append(playernames.get(i)+"\n");
+				}
 			}else if(connected && serverData.startsWith("START_BATTLE")){
 				battleScreen=new BattleScreen(player);
 				this.changeScreen(battleScreen);
 			}else if(connected && serverData.startsWith("MOVE")){
 				System.out.println(serverData);
 				hashData = GameUtility.parser(serverData);
+				if(!hashData.get("username").equals(player.getUsername())){
 				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setXPosition(Integer.parseInt(hashData.get("xPosition")));
 				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setYPosition(Integer.parseInt(hashData.get("yPosition")));
 				
 				battleScreen.getBattlefield().refreshField();
+				}
 			}else if(connected && serverData.startsWith("ATTACK")){
 				hashData = GameUtility.parser(serverData);
 				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Float.parseFloat(hashData.get("hp")));
@@ -150,8 +167,10 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				battleScreen.getBattlefield().refreshField();
 			}else if(connected && serverData.startsWith("DEFEND")){
 				hashData = GameUtility.parser(serverData);
+
+				if(!hashData.get("username").equals(player.getUsername())){
 				gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setOnDefend(Boolean.parseBoolean(hashData.get("isOnDefend")));
-				
+				}
 				battleScreen.getBattlefield().refreshField();
 			}else if(connected && serverData.startsWith("TURN")){
 				hashData = GameUtility.parser(serverData);
@@ -159,6 +178,8 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				this.battleScreen.getGameStatistics().getPlayerTurn().setText("Player Turn:"+hashData.get("username"));
 			}else if(connected && serverData.startsWith("RESET")){
 				String playerName;
+				player.movedCharacters=0;
+				
 				for(Iterator<?> i = gameState.getPlayers().keySet().iterator(); i.hasNext();) {
 					playerName = (String)i.next();
 					Player p = (Player)GameClient.gameState.getPlayers().get(playerName);
@@ -173,6 +194,7 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				hashData = GameUtility.parser(serverData);
 				JOptionPane op=new JOptionPane();
 				op.showMessageDialog(battleScreen,"Player "+hashData.get("username")+" wins!" );
+				System.exit(0);
 			}else if(connected) {
 				System.out.println("Connected");
 			}

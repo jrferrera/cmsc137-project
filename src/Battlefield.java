@@ -40,6 +40,7 @@ public class Battlefield extends JPanel implements Constants {
 			playerName = (String)i.next();
 			Player p = (Player)GameClient.gameState.getPlayers().get(playerName);
 			
+			int k=0;
 			for(int j = 0; j < MAXIMUM_CHARACTER_COUNT; j++){
 				Character temp = p.getCharacters()[j];
 				if(!GameElement.gameClient.getPlayer().getUsername().equals(playerName)){
@@ -49,12 +50,15 @@ public class Battlefield extends JPanel implements Constants {
 				int x = temp.getXPosition();
 				int y = temp.getYPosition();
 				if(temp.isDead(temp)){
+					k++;
 					temp = new Character();
 					temp.setXPosition(x);
 					temp.setYPosition(y);
+					p.getCharacters()[j]=temp;
 				}
 				blocks[x][y] = temp;
 			}
+			p.aliveCharacters-=k;
 		}
 		
 		
