@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -12,23 +13,44 @@ import javax.swing.JButton;
 public class Character extends JButton implements Constants, ActionListener, KeyListener {
 	private int characterIndex;
 	private float hp;
+	private float maxHp;
+	private int skillToUse;
+	
+	public int getSkillToUse() {
+		return skillToUse;
+	}
+
+	public void setSkillToUse(int skillToUse) {
+		this.skillToUse = skillToUse;
+	}
+
+	public float getMaxHp() {
+		return maxHp;
+	}
+
+	public void setMaxHp(float maxHp) {
+		this.maxHp = maxHp;
+	}
+
+	public float getMaxMp() {
+		return maxMp;
+	}
+
+	public void setMaxMp(float maxMp) {
+		this.maxMp = maxMp;
+	}
+
 	private float mp;
+	private float maxMp;
 	private float attack;
 	private float defense;
 	private int xPosition;
 	private int yPosition;
 	private int attackRange;
 	private int walkRange;
-	private int skillRange;
-	private boolean onDefend;
 	
-	public int getSkillRange() {
-		return skillRange;
-	}
-
-	public void setSkillRange(int skillRange) {
-		this.skillRange = skillRange;
-	}
+	private boolean onDefend;
+	private HashMap<Integer, Skill> skills;
 
 	private Icon characterImage;
 	private int state;
@@ -36,7 +58,9 @@ public class Character extends JButton implements Constants, ActionListener, Key
 	
 	public Character() {
 		setHp(200);
+		setMaxHp(200);
 		setMp(100);
+		setMaxMp(100);
 		setBorderPainted(false);
 		setWalkRange(0);
 		setBackground(new Color(Color.TRANSLUCENT));
@@ -45,6 +69,15 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		state=MOVE;
 		addActionListener(this);
 		setPreferredSize(new Dimension(Battlefield.width/16,Battlefield.height/16));
+		setSkills(new HashMap<Integer, Skill>());
+	}
+	
+	public boolean hasSkill(int keyCode) {
+		if(getSkills().containsKey(keyCode)) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public float getDefense() {
@@ -102,6 +135,16 @@ public class Character extends JButton implements Constants, ActionListener, Key
 
 	public void actionPerformed(ActionEvent e) {
 		Battlefield bf=GameElement.gameClient.getBattleScreen().getBattlefield();
+		Character cht = (Character) e.getSource();
+		
+		try{
+			if(cht == null) {
+				GameElement.gameClient.getBattleScreen().getCharacterProfile().displayNoCharacterSelected();
+			}else{
+				GameElement.gameClient.getBattleScreen().getCharacterProfile().displayCharacterProfile(cht);
+			}
+		}catch(Exception e1) {}
+		
 		// Instantiate active character
 		if(GameElement.gameClient.getPlayer().getUsername().equals(GameElement.gameClient.getPlayerTurn())){
 		if(bf.getActiveCharacter() == null){
@@ -141,11 +184,10 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		}
 		else if(this.owner!=null){
 			bf.getActiveCharacter().requestFocus();
+			Character ch = (Character) e.getSource();
 			switch(bf.getActiveCharacter().getState()){
 					case ATTACK:
-						Character ch = (Character) e.getSource();
-
-						if(bf.getActiveCharacter().getOwner() != ch.getOwner() && ch.getOwner() != null) {
+						if(isEnemyCharacter(ch)) {
 							System.out.println(ch.getHp());
 							bf.getActiveCharacter().attack(ch);
 							
@@ -159,6 +201,23 @@ public class Character extends JButton implements Constants, ActionListener, Key
 						bf.setActiveCharacter(null);
 						GameElement.gameClient.getPlayer().movedCharacters++;
 						this.removeKeyListener(this);
+						break;
+					case ACTION:
+						break;
+					case USE_SKILL:
+						if(isEnemyCharacter(ch)) {
+							System.out.println(ch.getHp());
+							bf.getActiveCharacter().useSkill(bf.getActiveCharacter().getSkills().get(bf.getActiveCharacter().getSkillToUse()), ch);
+							
+							String message = "UPDATE_PLAYERS" + "|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|mp=" + bf.getActiveCharacter().getMp() + "|enemyUsername=" + ch.getOwner().getUsername() + "|enemyCharacterIndex=" + ch.getCharacterIndex() + "|enemyHp=" + ch.getHp();  
+							GameElement.gameClient.sendToServer(message);
+							System.out.println(ch.getHp());
+							bf.getActiveCharacter().setSkillToUse(-1);
+						}
+						bf.removeHighlights();
+						bf.getActiveCharacter().setState(END_TURN);
+						bf.setActiveCharacter(null);
+						GameElement.gameClient.getPlayer().movedCharacters++;
 						break;
 					case END_TURN:
 						bf.setActiveCharacter(null);
@@ -200,14 +259,29 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		}
 	}
 	
-	public boolean isAttackable(int x, int y) {
-		if(GameUtility.getDistance(xPosition, yPosition, x, y) <= walkRange) {
+	public boolean withinAttackRange(Character character) {
+		if(GameUtility.getDistance(xPosition, yPosition, character.getXPosition(), character.getYPosition()) <= attackRange) {
 			return true;
 		}else {
 			return false;
 		}
 	}
 	
+	public boolean withinSkillRange(Skill skill, Character character) {
+		if(GameUtility.getDistance(xPosition, yPosition, character.getXPosition(), character.getYPosition()) <= skill.getRange()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public boolean isEnemyCharacter(Character character) {
+		if(owner != character.getOwner()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 
 	public int getState() {
 		return state;
@@ -266,7 +340,11 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			bf.setActiveCharacter(null);
 			GameElement.gameClient.getPlayer().movedCharacters++;
 			this.removeKeyListener(this);
-		}else{
+		}else if(bf.getActiveCharacter().hasSkill(e.getKeyCode())) {
+			bf.getActiveCharacter().setState(USE_SKILL);
+			bf.getActiveCharacter().setSkillToUse(e.getKeyCode());
+		}
+		else{
 			return;
 		}
 		
@@ -307,5 +385,38 @@ public class Character extends JButton implements Constants, ActionListener, Key
 		this.onDefend = onDefend;
 	}
 
-	
+	public HashMap<Integer, Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(HashMap<Integer, Skill> skills) {
+		this.skills = skills;
+	}
+
+	public void useSkill(Skill skill, Character character) {
+		if(mp >= skill.getMpCost()) {
+			setMp(mp - skill.getMpCost());
+			
+			float damage = skill.getDamage();
+			
+			if(skill.isOffensive()) {
+				if(character.isOnDefend() && skill.isDefensible()) {
+					damage -= character.getDefense();
+				}
+				
+				character.setHp(character.getHp() - damage);
+				
+				if(isDead(character)) {
+					character = new Character();
+					GameElement.gameClient.getBattleScreen().getBattlefield().revalidate();
+				}
+			}else if(skill.isSupport()) {
+				if(character.getHp() + damage > character.getMaxHp()) {
+					character.setHp(character.getMaxHp());
+				}else {
+					character.setHp(character.getHp() + damage);
+				}
+			}
+		}
+	}
 }

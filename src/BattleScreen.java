@@ -13,6 +13,15 @@ public class BattleScreen extends JPanel implements Constants {
 	private Battlefield battlefield;
 	private GameStatistics gameStatistics;
 	private GameMenu gameMenu;
+	private CharacterProfile characterProfile;
+		
+	public CharacterProfile getCharacterProfile() {
+		return characterProfile;
+	}
+
+	public void setCharacterProfile(CharacterProfile characterProfile) {
+		this.characterProfile = characterProfile;
+	}
 
 	public GameStatistics getGameStatistics() {
 		return gameStatistics;
@@ -27,6 +36,7 @@ public class BattleScreen extends JPanel implements Constants {
 		gameMenu = new GameMenu();
 		battlefield = new Battlefield(player);
 		gameStatistics = new GameStatistics(player);
+		characterProfile = new CharacterProfile();
 		
 		setPreferredSize(new Dimension(800, 700));
 		this.setLayout(new BorderLayout());
@@ -34,6 +44,7 @@ public class BattleScreen extends JPanel implements Constants {
 		JPanel battleScreenSidePanel=new JPanel();
 		battleScreenSidePanel.setPreferredSize(new Dimension(160,300));
 		battleScreenSidePanel.add(player.getChatBox());
+		battleScreenSidePanel.add(characterProfile);
 		add(battleScreenSidePanel,BorderLayout.EAST);
 		add(battlefield,BorderLayout.CENTER);
 		add(gameMenu, BorderLayout.SOUTH);

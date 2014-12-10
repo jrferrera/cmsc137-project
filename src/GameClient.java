@@ -195,6 +195,21 @@ public class GameClient extends JFrame implements Constants, Runnable {
 				JOptionPane op=new JOptionPane();
 				op.showMessageDialog(battleScreen,"Player "+hashData.get("username")+" wins!" );
 				System.exit(0);
+			}else if(connected && serverData.startsWith("UPDATE_PLAYERS")) {
+				hashData = GameUtility.parser(serverData);
+				
+				// Update skill user
+				Player pl;
+				pl = gameState.getPlayers().get(hashData.get("username"));
+				pl.getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setMp(Float.parseFloat(hashData.get("mp")));
+				
+				gameState.updatePlayer(pl.getUsername(), pl);
+				
+				// Update target player
+				pl = gameState.getPlayers().get(hashData.get("enemyUsername"));
+				pl.getCharacters()[Integer.parseInt(hashData.get("enemyCharacterIndex"))].setMp(Float.parseFloat(hashData.get("enemyHp")));
+				
+				gameState.updatePlayer(pl.getUsername(), pl);
 			}else if(connected) {
 				System.out.println("Connected");
 			}

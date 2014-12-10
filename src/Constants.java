@@ -49,6 +49,7 @@ public interface Constants {
 	public static final int MOVE = 0;
 	public static final int ACTION = 1;
 	public static final int ATTACK = 2;
+	public static final int USE_SKILL = 3;
 	public static final int END_TURN = 100;
 	
 }

@@ -226,6 +226,22 @@ public class GameServer implements Runnable, Constants {
 						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setOnDefend(Boolean.parseBoolean(hashData.get("isOnDefend")));
 						
 						broadcast(clientData);
+					}else if(clientData.startsWith("UPDATE_PLAYERS")){
+						hashData = GameUtility.parser(clientData);
+						
+						// Update skill user
+						player = gameState.getPlayers().get(hashData.get("username"));
+						player.getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setMp(Float.parseFloat(hashData.get("mp")));
+						
+						gameState.updatePlayer(player.getUsername(), player);
+						
+						// Update target player
+						player = gameState.getPlayers().get(hashData.get("enemyUsername"));
+						player.getCharacters()[Integer.parseInt(hashData.get("enemyCharacterIndex"))].setMp(Float.parseFloat(hashData.get("enemyHp")));
+						
+						gameState.updatePlayer(player.getUsername(), player);
+						
+						broadcast(clientData);
 					}
 			}
 		}
