@@ -13,19 +13,32 @@ public class Player implements Constants {
 	public int aliveCharacters=MAXIMUM_CHARACTER_COUNT;
 	private int enemyCharactersDefeated;
 	private int ownCharacterDeathCount;
+	private int score;
+	private GameStatistics gameStatistics;
+	private boolean isDefeated=false;
 	
 	public Player(String username, int port, InetAddress address) {
 		setUsername(username);
 		setPort(port);
 		setAddress(address);
+		setScore(0);
 		
 		characters = new Character[MAXIMUM_CHARACTER_COUNT];
 		chatBox = new ChatBox(username);
+		gameStatistics = new GameStatistics(this);
 		
 		setEnemyCharactersDefeated(0);
 		setOwnCharacterDeathCount(0);
 	}
 	
+	public GameStatistics getGameStatistics() {
+		return gameStatistics;
+	}
+
+	public void setGameStatistics(GameStatistics gameStatistics) {
+		this.gameStatistics = gameStatistics;
+	}
+
 	public Player(String username) {
 		setUsername(username);
 		
@@ -121,6 +134,22 @@ public class Player implements Constants {
 
 	public void setEnemyCharactersDefeated(int enemyCharactersDefeated) {
 		this.enemyCharactersDefeated = enemyCharactersDefeated;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public boolean isDefeated() {
+		return isDefeated;
+	}
+
+	public void setDefeated(boolean isDefeated) {
+		this.isDefeated = isDefeated;
 	}
 	
 }

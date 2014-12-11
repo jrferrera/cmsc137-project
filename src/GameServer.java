@@ -202,6 +202,12 @@ public class GameServer implements Runnable, Constants {
 							broadcast("RESET");
 						}
 						
+						while(gameState.getPlayers().get(playerNames[turn]).isDefeated()){
+							turn++;
+							if(turn==MAXIMUM_PLAYER_COUNT){
+								turn=0;
+							}
+						}
 						broadcast("TURN|username="+playerNames[turn]);
 					}else if(clientData.startsWith("MOVE")){
 						hashData = GameUtility.parser(clientData);
@@ -214,7 +220,8 @@ public class GameServer implements Runnable, Constants {
 						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setHp(Float.parseFloat(hashData.get("hp")));
 						
 						if(gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].getHp()<=0.0){
-							broadcast("KILL|username="+hashData.get("username")+"|characterIndex="+hashData.get("characterIndex"));
+							gameState.getPlayers().get(hashData.get("attackerUsername")).setScore(gameState.getPlayers().get(hashData.get("attackerUsername")).getScore()+1);
+							broadcast("KILL|username="+hashData.get("username")+"|characterIndex="+hashData.get("characterIndex") + "|userScored=" + hashData.get("attackerUsername"));
 							gameState.getPlayers().get(hashData.get("username")).aliveCharacters--;
 						}
 						
@@ -235,8 +242,9 @@ public class GameServer implements Runnable, Constants {
 						gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].setMp(Float.parseFloat(hashData.get("mp")));
 					
 						if(gameState.getPlayers().get(hashData.get("username")).getCharacters()[Integer.parseInt(hashData.get("characterIndex"))].getHp()<=0.0){
+							gameState.getPlayers().get(hashData.get("attackerUsername")).setScore(gameState.getPlayers().get(hashData.get("attackerUsername")).getScore()+1);
 							gameState.getPlayers().get(hashData.get("enemyUsername")).aliveCharacters--;
-							broadcast("KILL|username="+hashData.get("enemyUsername")+"|characterIndex="+hashData.get("enemyCharacterIndex"));
+							broadcast("KILL|username="+hashData.get("enemyUsername")+"|characterIndex="+hashData.get("enemyCharacterIndex") + "|userScored=" + hashData.get("attackerUsername"));
 						}
 						
 						broadcast(clientData);
@@ -262,6 +270,9 @@ public class GameServer implements Runnable, Constants {
 			if(p.aliveCharacters>0){
 				playersRemaining++;
 				winner=p.getUsername();
+			}
+			else{
+				p.setDefeated(true);
 			}
 		}
 		if(playersRemaining==1){

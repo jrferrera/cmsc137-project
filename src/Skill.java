@@ -2,13 +2,15 @@ import java.util.HashMap;
 
 
 public class Skill {
+	private String hotKey;
 	private String name;
 	private String type;
 	private float mpCost;
 	private float damage;
 	private int range;
 
-	public Skill(String name, String type, float mpCost, float damage, int range, boolean isDefensible) {
+	public Skill(String hotkey, String name, String type, float mpCost, float damage, int range, boolean isDefensible) {
+		setHotKey(hotkey);
 		setName(name);
 		setType(type);
 		setDefensible(isDefensible);
@@ -89,5 +91,13 @@ public class Skill {
 
 	public void setSupport(boolean isSupport) {
 		this.isSupport = isSupport;
+	}
+
+	public String getHotKey() {
+		return hotKey;
+	}
+
+	public void setHotKey(String hotKey) {
+		this.hotKey = hotKey;
 	}
 }

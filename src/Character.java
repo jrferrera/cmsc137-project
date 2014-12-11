@@ -187,12 +187,12 @@ public class Character extends JButton implements Constants, ActionListener, Key
 			Character ch = (Character) e.getSource();
 			switch(bf.getActiveCharacter().getState()){
 					case ATTACK:
-						if(bf.getActiveCharacter().isEnemyCharacter(ch.getOwner())) {
+						if(bf.getActiveCharacter().isEnemyCharacter(ch.getOwner()) ) {
 							System.out.println(ch.getHp());
 							bf.getActiveCharacter().attack(ch);
 							
 							// Update the state of enemy player
-							String message = "ATTACK|username=" + ch.getOwner().getUsername() + "|characterIndex=" + ch.getCharacterIndex() + "|hp=" + ch.getHp(); 
+							String message = "ATTACK|username=" + ch.getOwner().getUsername() + "|characterIndex=" + ch.getCharacterIndex() + "|hp=" + ch.getHp() + "|attackerUsername=" + bf.getActiveCharacter().getOwner().getUsername(); 
 							GameElement.gameClient.sendToServer(message);
 							System.out.println(ch.getHp());
 						}
@@ -206,7 +206,7 @@ public class Character extends JButton implements Constants, ActionListener, Key
 						System.out.println(ch.getHp());
 						bf.getActiveCharacter().useSkill(bf.getActiveCharacter().getSkills().get(bf.getActiveCharacter().getSkillToUse()), ch);
 						
-						String message1 = "UPDATE_PLAYERS" + "|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|mp=" + bf.getActiveCharacter().getMp() + "|enemyUsername=" + ch.getOwner().getUsername() + "|enemyCharacterIndex=" + ch.getCharacterIndex() + "|enemyHp=" + ch.getHp();  
+						String message1 = "UPDATE_PLAYERS" + "|username=" + bf.getActiveCharacter().getOwner().getUsername() + "|characterIndex=" + bf.getActiveCharacter().getCharacterIndex() + "|mp=" + bf.getActiveCharacter().getMp() + "|enemyUsername=" + ch.getOwner().getUsername() + "|enemyCharacterIndex=" + ch.getCharacterIndex() + "|enemyHp=" + ch.getHp() + "|attackerUsername=" + bf.getActiveCharacter().getOwner().getUsername();  
 						GameElement.gameClient.sendToServer(message1);
 						System.out.println(ch.getHp());
 						

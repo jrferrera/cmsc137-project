@@ -1,7 +1,7 @@
 
 public interface Constants {
 	// Game Name
-	public static final String GAME_TITLE = "Game";
+	public static final String GAME_TITLE = "Ragnatactics";
 	
 	// Server
 	public static final String SERVER = "localhost";
